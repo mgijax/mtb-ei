@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- You may freely edit this file. See commented blocks below for -->
+<!-- some examples of how to customize the build. -->
+<!-- (If you delete it and reopen the project it will be recreated.) -->
+
+<project name="mtbei" default="default" basedir="." xmlns:jw="org.unintelligible.antjnlpwar">
+    <description>Builds, tests, and runs the project mtbei.</description>
+    <import file="nbproject/build-jaws-impl.xml"/>
+    
+    
+    <!-- for keystore_password -->
+    <property file="build.properties"/>
+        
+    <import file="nbproject/build-impl.xml"/>
+
+    <import file="nbproject/profiler-build-impl.xml"/>  
+    
+      <!--
+
+    There exist several targets which are by default empty and which can be 
+    used for execution of your tasks. These targets are usually executed 
+    before and after some main targets. They are: 
+
+      -pre-init:                 called before initialization of project properties
+      -post-init:                called after initialization of project properties
+      -pre-compile:              called before javac compilation
+      -post-compile:             called after javac compilation
+      -pre-compile-single:       called before javac compilation of single file
+      -post-compile-single:      called after javac compilation of single file
+      -pre-compile-test:         called before javac compilation of JUnit tests
+      -post-compile-test:        called after javac compilation of JUnit tests
+      -pre-compile-test-single:  called before javac compilation of single JUnit test
+      -post-compile-test-single: called after javac compilation of single JUunit test
+      -pre-jar:                  called before JAR building
+      -post-jar:                 called after JAR building
+      -post-clean:               called after cleaning build products
+
+    (Targets beginning with '-' are not intended to be called on their own.)
+
+    Example of inserting an obfuscator after compilation could look like this:
+
+        <target name="-post-compile">
+            <obfuscate>
+                <fileset dir="${build.classes.dir}"/>
+            </obfuscate>
+        </target>
+
+    For list of available properties check the imported 
+    nbproject/build-impl.xml file. 
+
+
+    Another way to customize the build is by overriding existing main targets.
+    The targets of interest are: 
+
+      -init-macrodef-javac:     defines macro for javac compilation
+      -init-macrodef-junit:     defines macro for junit execution
+      -init-macrodef-debug:     defines macro for class debugging
+      -init-macrodef-java:      defines macro for class execution
+      -do-jar-with-manifest:    JAR building (if you are using a manifest)
+      -do-jar-without-manifest: JAR building (if you are not using a manifest)
+      run:                      execution of project 
+      -javadoc-build:           Javadoc generation
+      test-report:              JUnit report generation
+
+    An example of overriding the target for project execution could look like this:
+
+        <target name="run" depends="mtbei-impl.jar">
+            <exec dir="bin" executable="launcher.exe">
+                <arg file="${dist.jar}"/>
+            </exec>
+        </target>
+
+    Notice that the overridden target depends on the jar target and not only on 
+    the compile target as the regular run target does. Again, for a list of available 
+    properties which you can use, check the target you are overriding in the
+    nbproject/build-impl.xml file. 
+
+    -->
+    
+    <target name="test-props">
+        <echo>
+            ${keystore_password}
+        </echo>
+    </target>
+    
+    <target name="run-production">
+        <buildnumber/>
+        <tstamp/>
+        <property name="now" value="${DSTAMP}-${TSTAMP}" />
+        <copy file="conf/mtbei.prod.properties" tofile="src/mtbei.properties" overwrite="true"/>
+        <replace file="src/mtbei.properties" token="@build.number@" value="${build.number}"/>        
+        <replace file="src/mtbei.properties" token="@build.time@" value="${now}"/>        
+        <antcall target="jar"/>
+        <antcall target="run"/>
+    </target>
+    
+    <target name="run-development">
+        <buildnumber/>
+        <tstamp/>
+        <property name="now" value="${DSTAMP}-${TSTAMP}" />
+        <copy file="conf/mtbei.dev.properties" tofile="src/mtbei.properties" overwrite="true"/>
+        <replace file="src/mtbei.properties" token="@build.number@" value="${build.number}"/>        
+        <replace file="src/mtbei.properties" token="@build.time@" value="${now}"/>        
+        <antcall target="jar"/>
+        <antcall target="run"/>
+    </target>
+    
+    <target name="make-dev" description="Sign all the required jars for Dev and put them in webstart-dev folder">
+        <buildnumber/>
+        <tstamp/>
+        <property name="now" value="${DSTAMP}-${TSTAMP}" />
+        <copy file="conf/mtbei.dev.properties" tofile="src/mtbei.properties" overwrite="true"/>
+        <replace file="src/mtbei.properties" token="@build.number@" value="${build.number}"/>        
+        <replace file="src/mtbei.properties" token="@build.time@" value="${now}"/>        
+        <antcall target="jar"/>        
+        <property name="key.alias" value="http://dev.informatics.jax.org"/>
+        <property name="keystore.location" value="project.keys"/>
+        <property name="keystore.password" value="${keystore_password}"/>
+        <!-- <genkey alias="${key.alias}" keystore="${keystore.location}" storepass="${keystore.password}" validity="365" dname="CN=informatics, OU=jax, O=org, C=US"/> -->
+        <delete dir="webstart-dev"/>
+        <mkdir dir="webstart-dev"/>
+        <copy todir="webstart-dev">
+            <fileset dir="lib">
+                <include name="**/*.jar"/>
+            </fileset>
+        </copy>
+        <copy file="dist/mtbei.jar" tofile="webstart-dev/mtbei.jar"/>
+        <signjar alias="${key.alias}" keystore="${keystore.location}" storepass="${keystore.password}">
+            <fileset dir="webstart-dev">
+                <include name="**/*.jar"/>
+            </fileset>
+        </signjar>
+      
+    </target>
+    
+    <target name="dont-make-prod" description="Sign all the required jars for Prod and put them in webstart-prod folder">
+        <buildnumber/>
+        <tstamp/>
+        <property name="now" value="${DSTAMP}-${TSTAMP}" />
+        <copy file="conf/mtbei.prod.properties" tofile="src/mtbei.properties" overwrite="true"/>
+        <replace file="src/mtbei.properties" token="@build.number@" value="${build.number}"/>        
+        <replace file="src/mtbei.properties" token="@build.time@" value="${now}"/>        
+        <antcall target="jar"/>        
+        <property name="key.alias" value="http://aragorn.informatics.jax.org"/>
+        <property name="keystore.location" value="project.keys"/>
+        <property name="keystore.password" value="${keystore_password}"/>
+        <!--
+        <genkey alias="${key.alias}" keystore="${keystore.location}" storepass="${keystore.password}" validity="365" dname="CN=informatics, OU=jax, O=org, C=US"/>
+        //-->
+        <delete dir="webstart-prod"/>
+        <mkdir dir="webstart-prod"/>
+        <copy todir="webstart-prod">
+            <fileset dir="lib">
+                <include name="**/*.jar"/>
+            </fileset>
+        </copy>
+        <copy file="dist/mtbei.jar" tofile="webstart-prod/mtbei.jar"/>
+        <signjar alias="${key-alias}" keystore="${keystore.location}" storepass="${keystore.password}">
+            <fileset dir="webstart-prod">
+                <include name="**/*.jar"/>
+            </fileset>
+        </signjar>
+           
+    </target>
+	
+
+	
+	<target name="make-prod" description="Sign all the required jars for Prod and put them in webstart-prod folder">
+        <buildnumber/>
+        <tstamp/>
+        <property name="now" value="${DSTAMP}-${TSTAMP}" />
+        <copy file="conf/mtbei.vmprod.properties" tofile="src/mtbei.properties" overwrite="true"/>
+        <replace file="src/mtbei.properties" token="@build.number@" value="${build.number}"/>        
+        <replace file="src/mtbei.properties" token="@build.time@" value="${now}"/>        
+        <antcall target="jar"/>        
+        <property name="key.alias" value="http://aragorn.informatics.jax.org"/>
+        <property name="keystore.location" value="project.keys"/>
+        <property name="keystore.password" value="${keystore_password}"/>
+        <!--
+        <genkey alias="${key.alias}" keystore="${keystore.location}" storepass="${keystore.password}" validity="365" dname="CN=informatics, OU=jax, O=org, C=US"/>
+        //-->
+        <delete dir="webstart-vmprod"/>
+        <mkdir dir="webstart-vmprod"/>
+        <copy todir="webstart-vmprod">
+            <fileset dir="lib">
+                <include name="**/*.jar"/>
+            </fileset>
+        </copy>
+        <copy file="dist/mtbei.jar" tofile="webstart-vmprod/mtbei.jar"/>
+        <signjar alias="${key-alias}" keystore="${keystore.location}" storepass="${keystore.password}">
+            <fileset dir="webstart-vmprod">
+                <include name="**/*.jar"/>
+            </fileset>
+        </signjar>
+           
+    </target>
+	
+	
+	
+</project>
+

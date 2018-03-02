@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+    name="NCITumorFrequencyData"
+    targetNamespace="http://tumor.informatics.jax.org/NCITumorFrequencyData"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+    xmlns:tns="http://tumor.informatics.jax.org/NCITumorFrequencyData"
+    xmlns:xsd1="http://tumor.informatics.jax.org/NCITumorFrequencyData/xsd"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+
+    <!-- Types -->
+    <wsdl:types>
+        <xsd:schema
+            targetNamespace="http://tumor.informatics.jax.org/NCITumorFrequencyData/xsd"
+            xmlns="http://www.w3.org/2001/XMLSchema"
+            xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+            elementFormDefault="qualified">
+
+            <xsd:complexType name="TumorFrequencyData">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1"
+                    name="id" type="xsd:int" />
+                    <xsd:element minOccurs="1" maxOccurs="1"
+                    name="tumorName" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="unbounded"
+                    name="tumorSynonyms" type="xsd:string" />
+                    <xsd:element minOccurs="1" maxOccurs="1"
+                    name="strain" type="xsd1:StrainData" />
+                    <xsd:element minOccurs="1" maxOccurs="unbounded"
+                    name="treatmentType" type="xsd:string" />
+                    <xsd:element minOccurs="1" maxOccurs="unbounded"
+                    name="treatmentAgents" type="xsd:string" />
+                    <xsd:element minOccurs="1" maxOccurs="1"
+                    name="organAffected" type="xsd:string" />
+                    <xsd:element minOccurs="1" maxOccurs="1"
+                    name="metastasizesTo" type="xsd1:MetastasesData" />
+                    <xsd:element minOccurs="1" maxOccurs="1"
+                    name="sex" type="xsd:string" />
+                    <xsd:element minOccurs="1" maxOccurs="1"
+                    name="reproductiveStatus" type="xsd:string" />
+                    <xsd:element minOccurs="1" maxOccurs="1"
+                    name="frequency" type="xsd:string" />
+                    <xsd:element minOccurs="1" maxOccurs="1"
+                    name="ageOnset" type="xsd:string" />
+                    <xsd:element minOccurs="1" maxOccurs="1"
+                    name="ageDetection" type="xsd:string" />
+                    <xsd:element minOccurs="1" maxOccurs="unbounded"
+                    name="reference" type="xsd:string" />
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="StrainData">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1"
+                    name="strainName" type="xsd:string" />
+                    <xsd:element minOccurs="1" maxOccurs="1"
+                    name="strainTypes" type="xsd:string" />
+                    <xsd:element minOccurs="1" maxOccurs="1"
+                    name="strainNote" type="xsd:string" />
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="MetastasesData">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1"
+                    name="id" type="xsd:int" />
+                    <xsd:element minOccurs="1" maxOccurs="1"
+                    name="organ" type="xsd:string" />
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:element name="LookupTumorFrequencies">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" maxOccurs="unbounded"
+                        name="id" type="xsd:int" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="LookupTumorFrequenciesResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" maxOccurs="unbounded"
+                        name="tumorFrequencies" type="xsd1:TumorFrequencyData" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </wsdl:types>
+
+
+    <!-- Messages -->
+    <wsdl:message name="LookupTumorFrequencies">
+        <wsdl:part name="parameters" element="xsd1:LookupTumorFrequencies" />
+    </wsdl:message>
+    <wsdl:message name="LookupTumorFrequenciesResponse">
+        <wsdl:part name="parameters" element="xsd1:LookupTumorFrequenciesResponse" />
+    </wsdl:message>
+
+
+    <!-- Port type -->
+    <wsdl:portType name="NCITumorFrequencyDataPortType">
+
+        <wsdl:operation name="LookupTumorFrequencies">
+            <wsdl:input message="tns:LookupTumorFrequencies" />
+            <wsdl:output message="tns:LookupTumorFrequenciesResponse" />
+        </wsdl:operation>
+
+    </wsdl:portType>
+
+    <!-- Binding -->
+    <wsdl:binding name="NCITumorFrequencyDataPortBinding"
+        type="tns:NCITumorFrequencyDataPortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"
+        style="document" />
+
+        <wsdl:operation name="LookupTransactions">
+            <soap:operation soapAction="http://tumor.informatics.jax.org/NCITumorFrequencyData/LookupTumorFrequencies"
+            style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+
+    </wsdl:binding>
+
+    <!-- Service -->
+    <wsdl:service name="NCITumorFrequencyDataService">
+
+        <wsdl:port name="NCITumorFrequencyDataPort" binding="tns:NCITumorFrequencyDataPortBinding">
+            <soap:address location="http://aragorn:28080/axis2/services/NCITumorFrequencyDataService" />
+        </wsdl:port>
+
+    </wsdl:service>
+
+</wsdl:definitions>

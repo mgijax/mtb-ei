@@ -1,0 +1,23 @@
+<MESSAGE>
+<URL http://tumor.informatics.jax.org>
+<FONT Lucida Console,B,12>
+<COLOR white>
+<ALIGN left>
+<PAUSE 5>
+Mouse Tumor Biology Database (MTB) 
+Editorial Interface 
+PI: Janan T. Eppig  	
+Co-PI: Carol J. Bult 
+Co-PI: John P. Sundberg 
+Senior Scientific Curator: Debra M. Krupke 
+Senior Scientific Curator: Dale Begley 
+</MESSAGE>
+
+<MESSAGE>
+<URL http://tumor.informatics.jax.org>
+<FONT Lucida Console,N,12>
+<COLOR #8888FF>
+<ALIGN center>
+<PAUSE 1>
+http://tumor.informatics.jax.org
+</MESSAGE>

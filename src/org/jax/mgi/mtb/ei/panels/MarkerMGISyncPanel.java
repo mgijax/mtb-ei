@@ -1,0 +1,402 @@
+/*
+ * markerMGISynch.java
+ *
+ * Created on July 13, 2009, 11:15 AM
+ */
+package org.jax.mgi.mtb.ei.panels;
+
+import foxtrot.Task;
+import foxtrot.Worker;
+import java.awt.Color;
+import java.awt.Component;
+import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.JLabel;
+import org.jax.mgi.mtb.dao.custom.mtb.MTBSynchronizationUtilDAO;
+import org.jax.mgi.mtb.dao.gen.mtb.MarkerDAO;
+import org.jax.mgi.mtb.dao.gen.mtb.MarkerDTO;
+import org.jax.mgi.mtb.ei.EIGlobals;
+import org.jax.mgi.mtb.ei.util.Utils;
+import org.jax.mgi.mtb.gui.MXProgressGlassPane;
+
+/**
+ *
+ * @author  sbn
+ */
+public class MarkerMGISyncPanel extends CustomPanel {
+
+  private int dtoIndex = 0;
+  private ArrayList<ArrayList<MarkerDTO>> dtos = null;
+
+  /** Creates new form markerMGISynch */
+  public MarkerMGISyncPanel() {
+    initComponents();
+  }
+
+  /**
+   * Get all the markers that don't match MGD
+   */
+  private void loadMarkers() {
+
+    Component compGlassPane = customInternalFrame.getGlassPane();
+    MXProgressGlassPane progressGlassPane =
+            new MXProgressGlassPane(customInternalFrame.getRootPane());
+    customInternalFrame.setGlassPane(progressGlassPane);
+    progressGlassPane.setVisible(true);
+    progressGlassPane.setMessage("Comparing MTB Markers to MGI");
+
+    final MTBSynchronizationUtilDAO dao = MTBSynchronizationUtilDAO.getInstance();
+
+    dao.setMGIInfo(EIGlobals.getInstance().getMGIUser(),
+            EIGlobals.getInstance().getMGIPassword(),
+            EIGlobals.getInstance().getMGIDriver(),
+            EIGlobals.getInstance().getMGIUrl());
+    try {
+      Object obj = Worker.post(new Task() {
+
+        public Object run() throws Exception {
+          dtos = dao.getMarkersToSync();
+          return "Done";
+        }
+      });
+    } catch (Exception e) {
+    }
+
+    this.lblTotal.setText(dtos.size() + " non matching Markers");
+
+    progressGlassPane.setVisible(false);
+    customInternalFrame.setGlassPane(compGlassPane);
+    progressGlassPane = null;
+
+    customInternalFrame.adjust();
+
+    dtoIndex = 0;
+    showMarkers();
+  }
+
+  /**
+   * Update the dto to reflect the fields in the ei
+   * Save the updated marker
+   */
+  private void update() {
+    if (dtos != null) {
+      ArrayList<MarkerDTO> markers = dtos.get(dtoIndex);
+
+      MarkerDTO mtbMarker = markers.get(1);
+      mtbMarker.setName(txtMtbName.getText());
+      mtbMarker.setSymbol(txtMtbSymbol.getText());
+      mtbMarker.isNew(false);
+      mtbMarker.setUpdateDate(new Date());
+      mtbMarker.setUpdateUser(EIGlobals.getInstance().getMTBUsersDTO().getUserName());
+      MarkerDAO mDao = MarkerDAO.getInstance();
+      try {
+        mDao.save(mtbMarker);
+      } catch (Exception e) {
+        Utils.showErrorDialog("Unable to update makrer.", e);
+      }
+    }
+  }
+
+  /**
+   * Increment the counter
+   * and show the corresponding markers
+   */
+  private void next() {
+    if (dtos != null) {
+      dtoIndex++;
+      if (dtoIndex >= dtos.size()) {
+        dtoIndex = 0;
+      }
+      showMarkers();
+    }
+  }
+
+  /**
+   * Decrement the counter and show the 
+   * corresponding pair of markers
+   */
+  private void prev() {
+    if (dtos != null) {
+      dtoIndex--;
+      if (dtoIndex < 0) {
+        dtoIndex = dtos.size() - 1;
+      }
+      showMarkers();
+    }
+  }
+
+  /**
+   * Reset any higlighted fields
+   * Display the two markers and highlight
+   * any discrepencies
+   */
+  private void showMarkers() {
+
+    this.txtMgiName.setBackground(Color.WHITE);
+    this.txtMtbName.setBackground(Color.WHITE);
+    this.txtMgiSymbol.setBackground(Color.WHITE);
+    this.txtMtbSymbol.setBackground(Color.WHITE);
+
+    if (dtos == null || dtos.size() == 0) {
+      return;
+    }
+
+    ArrayList<MarkerDTO> markers = dtos.get(dtoIndex);
+    MarkerDTO mgiMarker = markers.get(0);
+    MarkerDTO mtbMarker = markers.get(1);
+
+    this.lblMarkerKey.setText(mtbMarker.getMarkerKey().toString());
+    this.lblMGIMarkerID.setText((String) mgiMarker.getDataBean().get(MTBSynchronizationUtilDAO.MGI_MARKER_ID));
+
+
+    if (!mgiMarker.getName().equals(mtbMarker.getName())) {
+      this.txtMgiName.setBackground(Color.RED);
+      this.txtMtbName.setBackground(Color.RED);
+    }
+    this.txtMgiName.setText(mgiMarker.getName());
+    this.txtMtbName.setText(mtbMarker.getName());
+
+    if (!mtbMarker.getSymbol().equals(
+            MTBSynchronizationUtilDAO.fixSymbol(mgiMarker.getSymbol()))) {
+      this.txtMgiSymbol.setBackground(Color.RED);
+      this.txtMtbSymbol.setBackground(Color.RED);
+    }
+
+    this.txtMgiSymbol.setText(mgiMarker.getSymbol());
+    this.txtMtbSymbol.setText(mtbMarker.getSymbol());
+
+
+    this.lblCount.setHorizontalAlignment(JLabel.CENTER);
+    this.lblCount.setText((dtoIndex + 1) + " of " + dtos.size());
+
+
+  }
+
+  /** This method is called from within the constructor to
+   * initialize the form.
+   * WARNING: Do NOT modify this code. The content of this method is
+   * always regenerated by the Form Editor.
+   */
+  @SuppressWarnings("unchecked")
+  // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+  private void initComponents() {
+
+    headerPanelAllele = new org.jax.mgi.mtb.gui.MXHeaderPanel();
+    btnCheck = new javax.swing.JButton();
+    txtMgiName = new javax.swing.JTextField();
+    txtMtbName = new javax.swing.JTextField();
+    txtMgiSymbol = new javax.swing.JTextField();
+    txtMtbSymbol = new javax.swing.JTextField();
+    lblName = new javax.swing.JLabel();
+    lblSymbol = new javax.swing.JLabel();
+    lblMgiAllele = new javax.swing.JLabel();
+    lblMtbAllele = new javax.swing.JLabel();
+    btnUpdate = new javax.swing.JButton();
+    lblTotal = new javax.swing.JLabel();
+    btnNext = new javax.swing.JButton();
+    btnCopyName = new javax.swing.JButton();
+    btnCopySymbol = new javax.swing.JButton();
+    lblMarkerKey = new javax.swing.JLabel();
+    btnPrev = new javax.swing.JButton();
+    lblCount = new javax.swing.JLabel();
+    lblMGIMarkerID = new javax.swing.JLabel();
+
+    headerPanelAllele.setDrawSeparatorUnderneath(true);
+    headerPanelAllele.setText("Marker MGI Synchronization");
+
+    btnCheck.setText("Check Markers");
+    btnCheck.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        checkMarkers(evt);
+      }
+    });
+
+    txtMgiName.setEditable(false);
+
+    txtMgiSymbol.setEditable(false);
+
+    lblName.setText("Name");
+
+    lblSymbol.setText("Symbol");
+
+    lblMgiAllele.setText("MGI Marker");
+
+    lblMtbAllele.setText("MTB Marker");
+
+    btnUpdate.setText("Update MTB Marker");
+    btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        updateMarker(evt);
+      }
+    });
+
+    btnNext.setText("Next");
+    btnNext.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        nextMarker(evt);
+      }
+    });
+
+    btnCopyName.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/jax/mgi/mtb/ei/resources/img/StepForward16.png"))); // NOI18N
+    btnCopyName.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        copyName(evt);
+      }
+    });
+
+    btnCopySymbol.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/jax/mgi/mtb/ei/resources/img/StepForward16.png"))); // NOI18N
+    btnCopySymbol.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        copySymbol(evt);
+      }
+    });
+
+    btnPrev.setText("Prev");
+    btnPrev.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        prevMarker(evt);
+      }
+    });
+
+    lblCount.setText(" ");
+
+    org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
+    this.setLayout(layout);
+    layout.setHorizontalGroup(
+      layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+      .add(headerPanelAllele, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 722, Short.MAX_VALUE)
+      .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+          .add(layout.createSequentialGroup()
+            .add(22, 22, 22)
+            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+              .add(lblName)
+              .add(lblSymbol))
+            .add(18, 18, 18)
+            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+              .add(txtMgiName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
+              .add(txtMgiSymbol, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
+              .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
+                .add(lblMgiAllele)
+                .add(15, 15, 15)
+                .add(lblMGIMarkerID, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 83, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED))))
+          .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+            .addContainerGap()
+            .add(btnCheck)
+            .add(18, 18, 18)
+            .add(lblTotal, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
+            .add(18, 18, 18)
+            .add(btnPrev)))
+        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+          .add(layout.createSequentialGroup()
+            .add(4, 4, 4)
+            .add(lblCount, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE))
+          .add(layout.createSequentialGroup()
+            .add(18, 18, 18)
+            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+              .add(org.jdesktop.layout.GroupLayout.LEADING, btnCopySymbol, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+              .add(org.jdesktop.layout.GroupLayout.LEADING, btnCopyName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+          .add(layout.createSequentialGroup()
+            .add(btnUpdate)
+            .addContainerGap())
+          .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+              .add(org.jdesktop.layout.GroupLayout.LEADING, txtMtbName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
+              .add(org.jdesktop.layout.GroupLayout.LEADING, txtMtbSymbol, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
+              .add(org.jdesktop.layout.GroupLayout.LEADING, btnNext)
+              .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
+                .add(lblMtbAllele)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(lblMarkerKey, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 119, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+            .add(122, 122, 122))))
+    );
+    layout.setVerticalGroup(
+      layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+      .add(layout.createSequentialGroup()
+        .add(headerPanelAllele, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+          .add(btnNext)
+          .add(btnPrev)
+          .add(lblCount, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 27, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+          .add(btnCheck)
+          .add(lblTotal, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 23, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+        .add(14, 14, 14)
+        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+          .add(lblMtbAllele)
+          .add(lblMgiAllele)
+          .add(lblMarkerKey, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 14, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+          .add(lblMGIMarkerID, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 14, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+          .add(lblName)
+          .add(txtMtbName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+          .add(txtMgiName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+          .add(btnCopyName))
+        .add(18, 18, 18)
+        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+          .add(lblSymbol)
+          .add(txtMtbSymbol, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+          .add(txtMgiSymbol, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+          .add(btnCopySymbol))
+        .add(18, 18, 18)
+        .add(btnUpdate)
+        .addContainerGap(63, Short.MAX_VALUE))
+    );
+  }// </editor-fold>//GEN-END:initComponents
+
+private void checkMarkers(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkMarkers
+  loadMarkers();
+}//GEN-LAST:event_checkMarkers
+
+private void nextMarker(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextMarker
+  next();
+}//GEN-LAST:event_nextMarker
+
+private void copyName(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyName
+  this.txtMtbName.setText(this.txtMgiName.getText());
+  this.txtMgiName.setBackground(Color.WHITE);
+  this.txtMtbName.setBackground(Color.WHITE);
+
+}//GEN-LAST:event_copyName
+
+private void copySymbol(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copySymbol
+  this.txtMtbSymbol.setText(
+          MTBSynchronizationUtilDAO.fixSymbol(this.txtMgiSymbol.getText()));
+  this.txtMgiSymbol.setBackground(Color.WHITE);
+  this.txtMtbSymbol.setBackground(Color.WHITE);
+
+}//GEN-LAST:event_copySymbol
+
+private void updateMarker(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateMarker
+  update();
+}//GEN-LAST:event_updateMarker
+
+private void prevMarker(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevMarker
+  prev();
+}//GEN-LAST:event_prevMarker
+  // Variables declaration - do not modify//GEN-BEGIN:variables
+  private javax.swing.JButton btnCheck;
+  private javax.swing.JButton btnCopyName;
+  private javax.swing.JButton btnCopySymbol;
+  private javax.swing.JButton btnNext;
+  private javax.swing.JButton btnPrev;
+  private javax.swing.JButton btnUpdate;
+  private org.jax.mgi.mtb.gui.MXHeaderPanel headerPanelAllele;
+  private javax.swing.JLabel lblCount;
+  private javax.swing.JLabel lblMGIMarkerID;
+  private javax.swing.JLabel lblMarkerKey;
+  private javax.swing.JLabel lblMgiAllele;
+  private javax.swing.JLabel lblMtbAllele;
+  private javax.swing.JLabel lblName;
+  private javax.swing.JLabel lblSymbol;
+  private javax.swing.JLabel lblTotal;
+  private javax.swing.JTextField txtMgiName;
+  private javax.swing.JTextField txtMgiSymbol;
+  private javax.swing.JTextField txtMtbName;
+  private javax.swing.JTextField txtMtbSymbol;
+  // End of variables declaration//GEN-END:variables
+}
