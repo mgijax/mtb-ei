@@ -488,22 +488,26 @@ private void nextMarker(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextM
 }//GEN-LAST:event_nextMarker
 
 private void copyName(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyName
+    
+    addSynonym(this.txtMtbName.getText());
     this.txtMtbName.setText(this.txtMgiName.getText());
     this.txtMgiName.setBackground(Color.WHITE);
     this.txtMtbName.setBackground(Color.WHITE);
     
-    addSynonym(this.txtMtbName.getText());
+    
     
 
 }//GEN-LAST:event_copyName
 
 private void copySymbol(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copySymbol
+    
+    addSynonym(this.txtMtbSymbol.getText());
     this.txtMtbSymbol.setText(
             MTBSynchronizationUtilDAO.fixSymbol(this.txtMgiSymbol.getText()));
     this.txtMgiSymbol.setBackground(Color.WHITE);
     this.txtMtbSymbol.setBackground(Color.WHITE);
     
-    addSynonym(this.txtMtbSymbol.getText());
+   
     
 
 }//GEN-LAST:event_copySymbol
