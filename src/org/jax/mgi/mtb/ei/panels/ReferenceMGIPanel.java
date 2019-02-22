@@ -216,25 +216,28 @@ public class ReferenceMGIPanel extends CustomPanel {
             updateProgress("Saving J#...");
             dtoAccession = daoAccession.save(dtoAccession);
             String strPubMedID = (String) dtoReference.getDataBean().get("pubMedID");
+            try{
+                long pmIDNum = (Long.parseLong(strPubMedID));
 
-            long pmIDNum = (Long.parseLong(strPubMedID));
+                dtoAccession = daoAccession.createAccessionDTO();
 
-            dtoAccession = daoAccession.createAccessionDTO();
+                dtoAccession.setAccID(strPubMedID);
+                dtoAccession.setMTBTypesKey(EIConstants.MTB_TYPE_REFERENCE);
+                dtoAccession.setObjectKey(dtoReference.getReferenceKey());
+                dtoAccession.setSiteInfoKey(29);
+                dtoAccession.setPrefixPart("");
+                dtoAccession.setNumericPart(pmIDNum);
+                dtoAccession.setCreateUser(dtoUser.getUserName());
+                dtoAccession.setCreateDate(dNow);
+                dtoAccession.setUpdateUser(dtoUser.getUserName());
+                dtoAccession.setUpdateDate(dNow);
 
-            dtoAccession.setAccID(strPubMedID);
-            dtoAccession.setMTBTypesKey(EIConstants.MTB_TYPE_REFERENCE);
-            dtoAccession.setObjectKey(dtoReference.getReferenceKey());
-            dtoAccession.setSiteInfoKey(29);
-            dtoAccession.setPrefixPart("");
-            dtoAccession.setNumericPart(pmIDNum);
-            dtoAccession.setCreateUser(dtoUser.getUserName());
-            dtoAccession.setCreateDate(dNow);
-            dtoAccession.setUpdateUser(dtoUser.getUserName());
-            dtoAccession.setUpdateDate(dNow);
-
-            updateProgress("Saving PubMed ID...");
-            dtoAccession = daoAccession.save(dtoAccession);
-            updateProgress("Accession data saved!");
+                updateProgress("Saving PubMed ID...");
+                dtoAccession = daoAccession.save(dtoAccession);
+                updateProgress("Accession data saved!");
+            }catch(NumberFormatException e){
+                updateProgress("No PubMed ID not creating PubMed accession record.");
+            }
 
             ///////////////////////////////////////////////////////////////////
             // COMMIT point reached
