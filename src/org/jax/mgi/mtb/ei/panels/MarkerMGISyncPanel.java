@@ -9,10 +9,13 @@ import foxtrot.Task;
 import foxtrot.Worker;
 import java.awt.Color;
 import java.awt.Component;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import javax.jnlp.BasicService;
+import javax.jnlp.ServiceManager;
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import org.jax.mgi.mtb.dao.custom.mtb.MTBSynchronizationUtilDAO;
@@ -258,6 +261,20 @@ public class MarkerMGISyncPanel extends CustomPanel {
         this.jList2.setListData(mtbList.toArray(mtbArray));
     }
     
+   private void markerIDClickHandler() {
+    if (lblMGIMarkerID.getText() != null) {
+      try {
+        // Lookup the javax.jnlp.BasicService object
+        BasicService bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
+       
+        bs.showDocument(new URL("http://www.informatics.jax.org/marker/"+lblMGIMarkerID.getText()));
+      } catch (Exception ue) {
+        // Service is not supported
+        Utils.showErrorDialog("Unable to open MGI marker link basic service is "+ue.getMessage());
+      }
+    }
+   }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -353,6 +370,13 @@ public class MarkerMGISyncPanel extends CustomPanel {
         });
 
         lblCount.setText(" ");
+
+        lblMGIMarkerID.setForeground(new java.awt.Color(50, 102, 255));
+        lblMGIMarkerID.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblMGIMarkerIDMouseClicked(evt);
+            }
+        });
 
         jScrollPane1.setViewportView(jList1);
 
@@ -527,6 +551,10 @@ private void prevMarker(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevM
     private void jButtonRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoveActionPerformed
        removeSynonyms();
     }//GEN-LAST:event_jButtonRemoveActionPerformed
+
+    private void lblMGIMarkerIDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblMGIMarkerIDMouseClicked
+        markerIDClickHandler();
+    }//GEN-LAST:event_lblMGIMarkerIDMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCheck;
