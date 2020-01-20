@@ -23,28 +23,43 @@ import org.jax.mgi.mtb.utils.DataBean;
 
 public class MGIReferenceAPIUtil {
 
-    private static String REFERENCE_URL = EIConstants.MGI_API_URL;
+ //   private static String REFERENCE_URL = EIConstants.MGI_API_URL;
+    
+    private static String REFERENCE_URL = "http://bhmgiei01.jax.org:8099/api/reference/";
+    
+    private static String LIT_TRIAGE_URL = "http://bhmgiei01.jax.org:8099/api/littriage/";
 
     private static String TOKEN = EIConstants.MGI_API_TOKEN;
 
     private static final String INDEXED = "Indexed";
     private static final String FULLCODED = "Full-coded";
 
-    private boolean testing = false;
+    private boolean testing = true;
+    
+    
+    public static void main(String[] args){
+     
+        MGIReferenceAPIUtil util = new MGIReferenceAPIUtil();
+        ArrayList<ReferenceDTO> refs = util.getReferences();
+        for(ReferenceDTO dto : refs){
+            System.out.println(dto.getAuthors());
+        }
+                
+    }
 
     public ArrayList<ReferenceDTO> getReferences() {
 
-        ArrayList<ReferenceDTO> list = new ArrayList<ReferenceDTO>();
+        ArrayList<ReferenceDTO> list = new ArrayList<>();
 
         String tumorRouted = "{ \"status_Tumor_Chosen\" : 1 }";
 
         try {
-            JSONObject job = new JSONObject(getJSON(REFERENCE_URL + "search", tumorRouted));
+            JSONObject job = new JSONObject(getJSON(LIT_TRIAGE_URL + "search", tumorRouted));
 
             JSONArray items = job.getJSONArray("items");
             for (int i = 0; i < items.length(); i++) {
                 JSONObject refObj = items.getJSONObject(i);
-                String refKey = refObj.getString("_refs_key");
+                String refKey = refObj.getString("refsKey");
                 list.add(getReferenceByKey(refKey));
 
             }
@@ -59,7 +74,7 @@ public class MGIReferenceAPIUtil {
 
     public ReferenceDTO getReferenceByKey(String refKey) throws Exception {
         String detailsString = REFERENCE_URL + refKey;
-        JSONObject reference = new JSONObject(getJSON(detailsString, null)).getJSONArray("items").getJSONObject(0);
+        JSONObject reference = new JSONObject(getJSON(detailsString, null));//.getJSONArray("items").getJSONObject(0);
 
         ReferenceDTO ref = ReferenceDAO.getInstance().createReferenceDTO();
 
@@ -70,16 +85,16 @@ public class MGIReferenceAPIUtil {
         bean.put("pubMedID", reference.getString("pubmedid"));
         ref.setTitle(fixNulls(reference.getString("title")));
         ref.setAuthors(fixNulls(reference.getString("authors")));
-        ref.setPrimaryAuthor(fixNulls(reference.getString("primary_author")));
+        ref.setPrimaryAuthor(fixNulls(reference.getString("primaryAuthor")));
         ref.setCitation(fixNulls(reference.getString("short_citation")));
         ref.setShortCitation(fixNulls(reference.getString("short_citation")));
         ref.setJournal(fixNulls(reference.getString("journal")));
-        ref.setVolume(fixNulls(reference.getString("volume")));
+        ref.setVolume(fixNulls(reference.getString("vol")));
         ref.setIssue(fixNulls(reference.getString("issue")));
-        ref.setPages(fixNulls(reference.getString("pages")));
+        ref.setPages(fixNulls(reference.getString("pgs")));
         ref.setYear(fixNulls(reference.getString("year")));
         ref.setIsReviewArticle((fixNulls(reference.getString("isReviewArticle")).contains("Y") ? 1 : 0));
-        ref.setAbstractText(fixNulls(reference.getString("ref_abstract")));
+        ref.setAbstractText(fixNulls(reference.getString("referenceAbstract")));
         ref.setMTBDataStatusKey(10L);  // 10 = "NEEDS REVIEW"
         ref.setPriority(null);
 
@@ -105,7 +120,7 @@ public class MGIReferenceAPIUtil {
 
         HttpURLConnection connection = null;
         try {
-            URL url = new URL(REFERENCE_URL + "statusUpdate?accid=" + jNum4URL + "&group=tumor&status=" + status);
+            URL url = new URL(LIT_TRIAGE_URL + "statusUpdate?accid=" + jNum4URL + "&group=tumor&status=" + status);
             connection
                     = (HttpURLConnection) url.openConnection();
 

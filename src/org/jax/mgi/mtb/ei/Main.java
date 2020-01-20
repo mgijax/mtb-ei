@@ -65,7 +65,6 @@ public class Main {
      */
     public void installLookAndFeel() {
         
-        System.out.println("Installing LAF");
         
         String OSName = System.getProperty("os.name").toLowerCase();
         boolean MAC = OSName.startsWith("mac");

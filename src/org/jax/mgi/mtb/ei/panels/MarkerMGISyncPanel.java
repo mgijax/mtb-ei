@@ -117,6 +117,9 @@ public class MarkerMGISyncPanel extends CustomPanel {
      * Increment the counter and show the corresponding markers
      */
     private void next() {
+        if(this.updateCheckBox.isSelected()){
+            update();
+        }
         if (dtos != null) {
             dtoIndex++;
             if (dtoIndex >= dtos.size()) {
@@ -311,6 +314,7 @@ public class MarkerMGISyncPanel extends CustomPanel {
         jLabel1 = new javax.swing.JLabel();
         btnCopySynonyms = new javax.swing.JButton();
         jButtonRemove = new javax.swing.JButton();
+        updateCheckBox = new javax.swing.JCheckBox();
 
         headerPanelAllele.setDrawSeparatorUnderneath(true);
         headerPanelAllele.setText("Marker MGI Synchronization");
@@ -398,6 +402,14 @@ public class MarkerMGISyncPanel extends CustomPanel {
             }
         });
 
+        updateCheckBox.setText("Update on Next");
+        updateCheckBox.setActionCommand("setUpdateOnNext");
+        updateCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateCheckBoxActionPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -451,7 +463,10 @@ public class MarkerMGISyncPanel extends CustomPanel {
                             .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
                             .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
                                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                                    .add(org.jdesktop.layout.GroupLayout.LEADING, btnNext)
+                                    .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
+                                        .add(btnNext)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                        .add(updateCheckBox))
                                     .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
                                         .add(lblMtbAllele)
                                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
@@ -469,7 +484,8 @@ public class MarkerMGISyncPanel extends CustomPanel {
                     .add(btnPrev)
                     .add(lblCount, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 27, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(btnCheck)
-                    .add(lblTotal, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 23, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(lblTotal, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 23, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(updateCheckBox))
                 .add(14, 14, 14)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(lblMtbAllele)
@@ -517,10 +533,7 @@ private void copyName(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyNam
     this.txtMtbName.setText(this.txtMgiName.getText());
     this.txtMgiName.setBackground(Color.WHITE);
     this.txtMtbName.setBackground(Color.WHITE);
-    
-    
-    
-
+   
 }//GEN-LAST:event_copyName
 
 private void copySymbol(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copySymbol
@@ -556,6 +569,10 @@ private void prevMarker(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevM
         markerIDClickHandler();
     }//GEN-LAST:event_lblMGIMarkerIDMouseClicked
 
+    private void updateCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateCheckBoxActionPerformed
+        
+    }//GEN-LAST:event_updateCheckBoxActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCheck;
     private javax.swing.JButton btnCopyName;
@@ -583,5 +600,6 @@ private void prevMarker(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevM
     private javax.swing.JTextField txtMgiSymbol;
     private javax.swing.JTextField txtMtbName;
     private javax.swing.JTextField txtMtbSymbol;
+    private javax.swing.JCheckBox updateCheckBox;
     // End of variables declaration//GEN-END:variables
 }
