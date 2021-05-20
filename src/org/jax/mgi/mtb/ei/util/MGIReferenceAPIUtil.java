@@ -23,11 +23,13 @@ import org.jax.mgi.mtb.utils.DataBean;
 
 public class MGIReferenceAPIUtil {
 
- //   private static String REFERENCE_URL = EIConstants.MGI_API_URL;
+    private static String API_URL = EIConstants.MGI_API_URL;
     
-    private static String REFERENCE_URL = "http://bhmgiei01.jax.org:8099/api/reference/";
+    private static String REFERENCE_URL = API_URL+"reference/";
     
-    private static String LIT_TRIAGE_URL = "http://bhmgiei01.jax.org:8099/api/littriage/";
+    private static String LIT_TRIAGE_URL = API_URL+"littriage/";
+    
+ 
 
     private static String TOKEN = EIConstants.MGI_API_TOKEN;
 
@@ -44,6 +46,8 @@ public class MGIReferenceAPIUtil {
         for(ReferenceDTO dto : refs){
             System.out.println(dto.getAuthors());
         }
+        
+       util.updateReferenceFullCoded("J:242898", "dud");
                 
     }
 
@@ -65,10 +69,10 @@ public class MGIReferenceAPIUtil {
             }
 
         } catch (Exception e) {
-            this.log(e);
-            this.log("Unable to load references from MGI webservice");
+            Utils.log(e);
+            Utils.log("Unable to load references from MGI webservice");
         }
-        this.log("Retrieved " + list.size() + " references chosen for Tumor from MGI");
+        Utils.log("Retrieved " + list.size() + " references chosen for Tumor from MGI");
         return list;
     }
 
@@ -137,8 +141,8 @@ public class MGIReferenceAPIUtil {
 
             if (200 != (connection.getResponseCode())) {
                 success = false;
-                this.log("Failed to update " + jNum + " to status " + status);
-                this.log("Response:" + connection.getResponseCode());
+                Utils.log("Failed to update " + jNum + " to status " + status);
+                Utils.log("Response:" + connection.getResponseMessage());
             }
             InputStream in = connection.getInputStream();
 
@@ -153,8 +157,8 @@ public class MGIReferenceAPIUtil {
 
             } catch (IOException e) {
 
-                this.log("Error reading from webservice " + url);
-                this.log(e);
+                Utils.log("Error reading from webservice " + url);
+                Utils.log(e);
 
             } finally {
                 if (in != null) {
@@ -165,13 +169,13 @@ public class MGIReferenceAPIUtil {
             JSONObject job = new JSONObject(response.toString());
             if (job.getString("error") != null && !"null".equals(job.getString("error"))) {
                 success = false;
-                this.log(job.getString("error") + " " + job.getString("message"));
+                Utils.log(job.getString("error") + " " + job.getString("message"));
             }
 
-            this.log("MGI Reference API " + url + " called with response " + response.toString());
+            Utils.log("MGI Reference API " + url + " called with response " + response.toString());
 
         } catch (Exception e) {
-            this.log(e);
+            Utils.log(e);
 
         } finally {
             if (connection != null) {
@@ -220,8 +224,8 @@ public class MGIReferenceAPIUtil {
                     wr.close();
                 } catch (IOException e) {
 
-                    this.log("Error writing to webservice " + uri);
-                    this.log(e);
+                    Utils.log("Error writing to webservice " + uri);
+                    Utils.log(e);
 
                 } finally {
                     if (out != null) {
@@ -241,8 +245,8 @@ public class MGIReferenceAPIUtil {
 
             } catch (IOException e) {
 
-                this.log("Error reading from webservice " + uri);
-                this.log(e);
+                Utils.log("Error reading from webservice " + uri);
+                Utils.log(e);
 
             } finally {
                 if (in != null) {
@@ -250,8 +254,8 @@ public class MGIReferenceAPIUtil {
                 }
             }
         } catch (IOException e) {
-            this.log("Error connecting to webservice " + uri);
-            this.log(e);
+            Utils.log("Error connecting to webservice " + uri);
+            Utils.log(e);
         } finally {
             if (connection != null) {
                 connection.disconnect();
