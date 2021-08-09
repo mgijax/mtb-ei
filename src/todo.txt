@@ -1,1 +1,0 @@
-Make the search panels cancellable.  See http://weblogs.java.net/blog/gfx/archive/2005/10/swingfx_cancell.html for an idea.
