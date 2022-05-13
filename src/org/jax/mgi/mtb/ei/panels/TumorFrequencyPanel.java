@@ -1836,9 +1836,9 @@ public class TumorFrequencyPanel extends CustomPanel implements ActionListener {
         Utils.setNumericFilter(txtAllelePairKey);
 
         // make it so the following fields accept up to 255 characters
-        Utils.setTextLimit(txtareaMainNote, 255);
-        Utils.setTextLimit(txtNote, 255);
-        Utils.setTextLimit(txtareaCytogeneticNote, 255);
+        //Utils.setTextLimit(txtareaMainNote, 255);
+        //Utils.setTextLimit(txtNote, 255);
+        //Utils.setTextLimit(txtareaCytogeneticNote, 255);
 
 
         // adjust components as needed

@@ -912,7 +912,7 @@ public class StrainPanel extends CustomPanel implements ActionListener {
         Utils.setNumericFilter(txtStrainKey);
 
         // make it so the following fields accept up to 255 characters
-        Utils.setTextLimit(txtareaDescription, 255);
+        //Utils.setTextLimit(txtareaDescription, 255);
 
         // adjust components as needed
         if (nType == STRAIN_PANEL_ADD) {

@@ -874,7 +874,7 @@ public class ReferencePanel extends CustomPanel {
    */
   private void initCustom(boolean editable) {
 
-    Utils.setTextLimit(this.txtNote, 500);
+   // Utils.setTextLimit(this.txtNote, 500);
 
     this.txtReferenceKey.setEditable(false);
     this.txtJNumber.setEditable(false);
