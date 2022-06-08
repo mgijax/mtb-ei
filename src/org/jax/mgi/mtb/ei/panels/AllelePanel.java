@@ -15,7 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 import org.jax.mgi.mtb.dao.custom.SearchResults;
 import org.jax.mgi.mtb.dao.custom.mtb.MTBGeneticsUtilDAO;
 import org.jax.mgi.mtb.dao.custom.mtb.MTBSynchronizationUtilDAO;
@@ -79,7 +79,7 @@ public class AllelePanel extends CustomPanel {
     // ----------------------------------------------------- Instance Variables
 
     private final static Logger log =
-            Logger.getLogger(AllelePanel.class.getName());
+            org.apache.logging.log4j.LogManager.getLogger(AllelePanel.class.getName());
 
     // the allele dto
     private AlleleDTO dtoAllele = null;

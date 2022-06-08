@@ -27,7 +27,7 @@ public class MGIReferenceAPIUtil {
     
     private static String REFERENCE_URL = BASE_URL+"reference/";
     
-    private static String LIT_TRIAGE_URL = BASE_URL+"littriage/";
+
 
     private static String TOKEN = EIConstants.MGI_API_TOKEN;
 
@@ -41,17 +41,17 @@ public class MGIReferenceAPIUtil {
      
         MGIReferenceAPIUtil util = new MGIReferenceAPIUtil();
         
-        util.REFERENCE_URL = "http://bheidev01.jax.org:8099/api/reference/";    
-        util.LIT_TRIAGE_URL = "http://bheidev01.jax.org:8099/api/littriage/";
+        util.REFERENCE_URL =  "http://bhmgipwi01lp.jax.org:8099/api/reference/";    
+      
         util.testing = true;
-        util.TOKEN="myDefaultToken";
+        util.TOKEN="";
 
         ArrayList<ReferenceDTO> refs = util.getReferences();
         for(ReferenceDTO dto : refs){
             System.out.println(dto.getAuthors());
         }
         
-       util.updateReferenceFullCoded("J:242898", "dab");
+       util.updateReferenceFullCoded("J:324452", "dab");
                 
     }
 
@@ -62,9 +62,9 @@ public class MGIReferenceAPIUtil {
         String tumorRouted = "{ \"status_Tumor_Chosen\" : 1 }";
 
         try {
-            JSONObject job = new JSONObject(getJSON(LIT_TRIAGE_URL + "search", tumorRouted));
+            JSONArray items = new JSONArray(getJSON(REFERENCE_URL + "search", tumorRouted));
 
-            JSONArray items = job.getJSONArray("items");
+         //   JSONArray items = job.getJSONArray("items");
             for (int i = 0; i < items.length(); i++) {
                 JSONObject refObj = items.getJSONObject(i);
                 String refKey = refObj.getString("refsKey");
@@ -128,7 +128,7 @@ public class MGIReferenceAPIUtil {
 
         HttpURLConnection connection = null;
         try {
-            URL url = new URL(LIT_TRIAGE_URL + "statusUpdate?accid=" + jNum4URL + "&group=tumor&status=" + status);
+            URL url = new URL(REFERENCE_URL + "statusUpdate?accid=" + jNum4URL + "&group=tumor&status=" + status);
             connection
                     = (HttpURLConnection) url.openConnection();
 

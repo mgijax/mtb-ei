@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JFileChooser;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 import org.jax.mgi.mtb.dao.gen.mtb.ImagesDAO;
 import org.jax.mgi.mtb.dao.gen.mtb.ImagesDTO;
 import org.jax.mgi.mtb.dao.gen.mtb.MTBUsersDTO;
@@ -52,7 +52,7 @@ public class PathologyImageDetailDialog extends javax.swing.JDialog {
     // ----------------------------------------------------- Instance Variables
 
     private final static Logger log =
-            Logger.getLogger(PathologyImageDetailDialog.class.getName());
+            org.apache.logging.log4j.LogManager.getLogger(PathologyImageDetailDialog.class.getName());
     private int nType = IMAGE_ADD;
     private ImagesDTO dtoImage = null;
     private ImagesDTO dtoImageOriginal = null;

@@ -18,7 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 import org.jax.mgi.mtb.ei.EIGlobals;
 import org.jax.mgi.mtb.ei.dialogs.AboutDialog;
 import org.jax.mgi.mtb.ei.gui.WatermarkDesktopPane;
@@ -83,7 +83,7 @@ public class MainFrame extends JFrame {
     // ----------------------------------------------------- Instance Variables
 
     private final static Logger log = 
-            Logger.getLogger(MainFrame.class.getName());
+            org.apache.logging.log4j.LogManager.getLogger(MainFrame.class.getName());
     private MainMenuRollupPanel menuPanel = null;
     private Icon iconSearch = null;
     private Icon iconAdd = null;

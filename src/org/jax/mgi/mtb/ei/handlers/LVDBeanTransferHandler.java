@@ -13,7 +13,7 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.TransferHandler;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 import org.jax.mgi.mtb.ei.EIGlobals;
 import org.jax.mgi.mtb.ei.models.LVDBeanListModel;
 
@@ -33,7 +33,7 @@ public class LVDBeanTransferHandler extends TransferHandler {
     // ----------------------------------------------------- Instance Variables
 
     private final static Logger log =
-            Logger.getLogger(LVDBeanTransferHandler.class.getName());
+            org.apache.logging.log4j.LogManager.getLogger(LVDBeanTransferHandler.class.getName());
     private DataFlavor localListFlavor, serialListFlavor;
     private String localListType = DataFlavor.javaJVMLocalObjectMimeType +
                                 ";class=java.util.List";

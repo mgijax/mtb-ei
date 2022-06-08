@@ -13,7 +13,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 import org.jax.mgi.mtb.dao.gen.mtb.AlleleDAO;
 import org.jax.mgi.mtb.dao.gen.mtb.AlleleDTO;
 import org.jax.mgi.mtb.dao.gen.mtb.AllelePairDAO;
@@ -58,7 +58,7 @@ public class AllelePairPanel extends CustomPanel {
     // ----------------------------------------------------- Instance Variables
 
     private final static Logger log =
-            Logger.getLogger(AllelePairPanel.class.getName());
+            org.apache.logging.log4j.LogManager.getLogger(AllelePairPanel.class.getName());
 
     // the AllelePairDTO object
     private AllelePairDTO dtoAP = null;

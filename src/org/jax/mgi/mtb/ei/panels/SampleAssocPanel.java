@@ -20,7 +20,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 import org.jax.mgi.mtb.dao.custom.mtb.MTBSeriesSampleUtilDAO;
 import org.jax.mgi.mtb.dao.gen.mtb.SampleAssocDAO;
 import org.jax.mgi.mtb.dao.gen.mtb.SampleAssocDTO;
@@ -49,7 +49,7 @@ import org.jax.mgi.mtb.utils.LabelValueDataBean;
 public class SampleAssocPanel extends CustomPanel {
 
   private final static Logger log =
-          Logger.getLogger(SampleAssocPanel.class.getName());
+          org.apache.logging.log4j.LogManager.getLogger(SampleAssocPanel.class.getName());
   private MTBSeriesSampleUtilDAO ssUtilDAO = MTBSeriesSampleUtilDAO.getInstance();
   private SampleDTO sampleDTO = null;
 

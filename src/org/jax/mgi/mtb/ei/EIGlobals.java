@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 import org.jax.mgi.mtb.ei.gui.MainFrame;
 import org.jax.mgi.mtb.dao.custom.mtb.MTBPathologyImageUtilDAO;
 import org.jax.mgi.mtb.dao.custom.mtb.MTBReferenceUtilDAO;
@@ -119,7 +119,7 @@ public class EIGlobals {
   private final String MGI_API_URL="mgi.api.url";
   private final String MGI_API_TOKEN = "mgi.api.token";
   private final static Logger log =
-          Logger.getLogger(EIGlobals.class.getName());
+          org.apache.logging.log4j.LogManager.getLogger(EIGlobals.class.getName());
   private static EIGlobals instance = null;
   private String JDBCDriver;
   private String JDBCUrl;

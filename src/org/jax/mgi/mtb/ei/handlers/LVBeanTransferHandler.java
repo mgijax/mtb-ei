@@ -13,7 +13,7 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.TransferHandler;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 import org.jax.mgi.mtb.ei.EIGlobals;
 import org.jax.mgi.mtb.ei.models.LVBeanListModel;
 import org.jax.mgi.mtb.utils.LabelValueBean;
@@ -34,7 +34,7 @@ public class LVBeanTransferHandler<L,V> extends TransferHandler {
     // ----------------------------------------------------- Instance Variables
 
     private final static Logger log =
-            Logger.getLogger(LVBeanTransferHandler.class.getName());
+            org.apache.logging.log4j.LogManager.getLogger(LVBeanTransferHandler.class.getName());
     private JList source = null;
     private DataFlavor localListFlavor;
     private DataFlavor serialListFlavor;

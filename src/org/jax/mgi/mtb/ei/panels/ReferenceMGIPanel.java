@@ -6,7 +6,7 @@ package org.jax.mgi.mtb.ei.panels;
 
 import java.awt.Point;
 import java.util.Date;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 import org.jax.mgi.mtb.dao.custom.mtb.MTBSynchronizationUtilDAO;
 import org.jax.mgi.mtb.dao.gen.mtb.AccessionDAO;
 import org.jax.mgi.mtb.dao.gen.mtb.AccessionDTO;
@@ -39,7 +39,7 @@ public class ReferenceMGIPanel extends CustomPanel {
     // none
     // ----------------------------------------------------- Instance Variables
     private final static Logger log
-            = Logger.getLogger(ReferenceMGIPanel.class.getName());
+            = org.apache.logging.log4j.LogManager.getLogger(ReferenceMGIPanel.class.getName());
 
     private ReferenceDTO dtoReference = null;
 
