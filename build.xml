@@ -144,9 +144,9 @@
         <property name="key.alias" value="http://aragorn.informatics.jax.org"/>
         <property name="keystore.location" value="project.keys"/>
         <property name="keystore.password" value="${keystore_password}"/>
-        <!--
-        <genkey alias="${key.alias}" keystore="${keystore.location}" storepass="${keystore.password}" validity="365" dname="CN=informatics, OU=jax, O=org, C=US"/>
-        //-->
+        
+       <!-- <genkey alias="${key.alias}" keystore="${keystore.location}" storepass="${keystore.password}" validity="365" dname="CN=informatics, OU=jax, O=org, C=US"/> -->
+        
         <delete dir="webstart-prod"/>
         <mkdir dir="webstart-prod"/>
         <copy todir="webstart-prod">
@@ -155,7 +155,7 @@
             </fileset>
         </copy>
         <copy file="dist/mtbei.jar" tofile="webstart-prod/mtbei.jar"/>
-        <signjar alias="${key-alias}" keystore="${keystore.location}" storepass="${keystore.password}">
+        <signjar alias="${key.alias}" keystore="${keystore.location}" storepass="${keystore.password}">
             <fileset dir="webstart-prod">
                 <include name="**/*.jar"/>
             </fileset>
@@ -169,16 +169,16 @@
         <buildnumber/>
         <tstamp/>
         <property name="now" value="${DSTAMP}-${TSTAMP}" />
-        <copy file="conf/mtbei.vmprod.properties" tofile="src/mtbei.properties" overwrite="true"/>
+        <copy file="conf/mtbei.prod.properties" tofile="src/mtbei.properties" overwrite="true"/>
         <replace file="src/mtbei.properties" token="@build.number@" value="${build.number}"/>        
         <replace file="src/mtbei.properties" token="@build.time@" value="${now}"/>        
         <antcall target="jar"/>        
-        <property name="key.alias" value="http://aragorn.informatics.jax.org"/>
+        <property name="key.alias" value="http://tumor.informatics.jax.org"/>
         <property name="keystore.location" value="project.keys"/>
         <property name="keystore.password" value="${keystore_password}"/>
-        <!--
-        <genkey alias="${key.alias}" keystore="${keystore.location}" storepass="${keystore.password}" validity="365" dname="CN=informatics, OU=jax, O=org, C=US"/>
-        //-->
+        
+     <!--   <genkey alias="${key.alias}" keystore="${keystore.location}" storepass="${keystore.password}" validity="365" dname="CN=informatics, OU=jax, O=org, C=US" keyalg="dsa"/> -->
+       
         <delete dir="webstart-vmprod"/>
         <mkdir dir="webstart-vmprod"/>
         <copy todir="webstart-vmprod">
@@ -187,7 +187,7 @@
             </fileset>
         </copy>
         <copy file="dist/mtbei.jar" tofile="webstart-vmprod/mtbei.jar"/>
-        <signjar alias="${key-alias}" keystore="${keystore.location}" storepass="${keystore.password}">
+        <signjar alias="${key.alias}" keystore="${keystore.location}" storepass="${keystore.password}">
             <fileset dir="webstart-vmprod">
                 <include name="**/*.jar"/>
             </fileset>

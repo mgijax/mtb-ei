@@ -69,8 +69,8 @@ public class ReferencePanel extends CustomPanel {
   private static final long MTB_DATA_STATUS_INDEXED = 130;
   // -------------------------------------------------------------- Constants
   // put this here or get it from somewhere else
-  private static final String PUBMED_LINK = "http://www-ncbi-nlm-nih-gov.ezproxy.jax.org/pubmed/"; 
-  
+  //private static final String PUBMED_LINK = "http://www-ncbi-nlm-nih-gov.ezproxy.jax.org/pubmed/"; 
+  private static final String PUBMED_LINK = "https://pubmed.ncbi.nlm.nih.gov/?otool=janllib&term=";
   // ----------------------------------------------------- Instance Variables
   // progress monitor
   MXProgressMonitor progressMonitor = null;

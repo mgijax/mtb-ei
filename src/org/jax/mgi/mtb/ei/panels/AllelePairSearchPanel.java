@@ -4,8 +4,7 @@
  */
 package org.jax.mgi.mtb.ei.panels;
 
-import foxtrot.Task;
-import foxtrot.Worker;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
@@ -17,7 +16,6 @@ import java.util.Map;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
 import org.jax.mgi.mtb.dao.custom.SearchResults;
 import org.jax.mgi.mtb.dao.custom.mtb.MTBGeneticsAllelePairSearchDTO;
 import org.jax.mgi.mtb.dao.custom.mtb.MTBGeneticsUtilDAO;
@@ -109,9 +107,7 @@ public class AllelePairSearchPanel extends CustomPanel {
    * @return the <code>SearchResults</code>
    */
   private SearchResults searchDatabase() throws Exception {
-    final SearchResults res = (SearchResults) Worker.post(new Task() {
-
-      public Object run() throws Exception {
+    
         gV = new Vector();
 
         // determine parameters
@@ -173,14 +169,14 @@ public class AllelePairSearchPanel extends CustomPanel {
 
         // allele types
         List<String> arrAlleleTypes = null;
-        Object[] arrAlleleTypesSelected =
-                listAlleleTypes.getSelectedValues();
-        if (arrAlleleTypesSelected.length > 0) {
+        List arrAlleleTypesSelected =
+                listAlleleTypes.getSelectedValuesList();
+        if (arrAlleleTypesSelected.size() > 0) {
           arrAlleleTypes = new ArrayList<String>();
 
-          for (int i = 0; i < arrAlleleTypesSelected.length; i++) {
+          for (int i = 0; i < arrAlleleTypesSelected.size(); i++) {
             LabelValueBean<String, Long> beanAlleleType =
-                    (LabelValueBean<String, Long>) arrAlleleTypesSelected[i];
+                    (LabelValueBean<String, Long>) arrAlleleTypesSelected.get(i);
             arrAlleleTypes.add(beanAlleleType.getValue() + "");
           }
         }
@@ -209,10 +205,7 @@ public class AllelePairSearchPanel extends CustomPanel {
         }
 
         return res;
-      }
-    });
-
-    return res;
+     
   }
 
   /**
@@ -293,39 +286,26 @@ public class AllelePairSearchPanel extends CustomPanel {
       // construct the new table to display the results
       configureSearchResultsTable();
 
-      Object obj = Worker.post(new Task() {
-
-        public Object run() throws Exception {
-          final List<MTBGeneticsAllelePairSearchDTO> arr = new ArrayList<MTBGeneticsAllelePairSearchDTO>(res.getList());
+      
+          final List<MTBGeneticsAllelePairSearchDTO> arr = new ArrayList<>(res.getList());
           for (int i = 0; i < arr.size(); i++) {
-            final int row = i;
-
-            if ((i % 50) == 0) {
-              Thread.sleep(10);
-              SwingUtilities.invokeLater(new Runnable() {
-
-                public void run() {
-                  lblStatus.setText("Rendering result " +
-                          row + " of " +
-                          arr.size());
-                }
-              });
-            }
+           
+            
 
             MTBGeneticsAllelePairSearchDTO dtoAllelePair = arr.get(i);
 
             try {
               Vector v = new Vector();
-              v.add(new Integer(
+              v.add(Integer.valueOf(
                       dtoAllelePair.getAllelePairKey()));
-              v.add(new Integer(dtoAllelePair.getAllele1Key()));
+              v.add(Integer.valueOf(dtoAllelePair.getAllele1Key()));
               v.add(StringUtils.nvl(
                       dtoAllelePair.getAllele1Symbol(), ""));
               v.add(StringUtils.nvl(
                       dtoAllelePair.getAllele1Type(), ""));
 
               Integer iTemp =
-                      new Integer(dtoAllelePair.getAllele2Key());
+                       dtoAllelePair.getAllele2Key();
 
               if (iTemp.intValue() == 0) {
                 v.add(null);
@@ -341,10 +321,8 @@ public class AllelePairSearchPanel extends CustomPanel {
               gV.add(v);
             } catch (Exception e) {
             }
+         
           }
-          return "Done";
-        }
-      });
 
       // enable the UI
       btnSearch.setEnabled(true);
@@ -367,13 +345,8 @@ public class AllelePairSearchPanel extends CustomPanel {
       MXDefaultTableModel tm = new MXDefaultTableModel(gV, headers);
       fxtblSearchResults.setModel(tm);
 
-      final int nSearchResults = res.getList().size();
-      SwingUtilities.invokeLater(new Runnable() {
-
-        public void run() {
-          lblStatus.setText(nSearchResults + " results found.");
-        }
-      });
+    
+      
       progressGlassPane.setVisible(false);
       customInternalFrame.setGlassPane(compGlassPane);
       progressGlassPane = null;

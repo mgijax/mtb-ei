@@ -4,8 +4,7 @@
  */
 package org.jax.mgi.mtb.ei.panels;
 
-import foxtrot.Task;
-import foxtrot.Worker;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;

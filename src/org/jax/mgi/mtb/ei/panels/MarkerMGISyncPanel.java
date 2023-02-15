@@ -5,8 +5,7 @@
  */
 package org.jax.mgi.mtb.ei.panels;
 
-import foxtrot.Task;
-import foxtrot.Worker;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.net.URL;
@@ -60,16 +59,10 @@ public class MarkerMGISyncPanel extends CustomPanel {
                 EIGlobals.getInstance().getMGIPassword(),
                 EIGlobals.getInstance().getMGIDriver(),
                 EIGlobals.getInstance().getMGIUrl());
-        try {
-            Object obj = Worker.post(new Task() {
-                
-                public Object run() throws Exception {
-                    dtos = dao.getMarkersToSync();
-                    return "Done";
-                }
-            });
-        } catch (Exception e) {
-        }
+       
+        dtos = dao.getMarkersToSync();
+                   
+            
         
         this.lblTotal.setText(dtos.size() + " non matching Markers");
         

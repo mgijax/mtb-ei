@@ -4,11 +4,9 @@
 <COLOR white>
 <ALIGN left>
 <PAUSE 5>
-Mouse Tumor Biology Database (MTB) 
-Editorial Interface 
-PI: Janan T. Eppig  	
-Co-PI: Carol J. Bult 
-Co-PI: John P. Sundberg 
+Mouse Models of Human Cancer database (MMHCdb) 
+Editorial Interface 	
+PI: Carol J. Bult 
 Senior Scientific Curator: Debra M. Krupke 
 Senior Scientific Curator: Dale Begley 
 </MESSAGE>
