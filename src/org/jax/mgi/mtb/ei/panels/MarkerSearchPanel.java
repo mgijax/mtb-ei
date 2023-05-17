@@ -8,6 +8,8 @@ package org.jax.mgi.mtb.ei.panels;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.SecondaryLoop;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -134,8 +136,7 @@ public class MarkerSearchPanel extends CustomPanel {
      * @return the <code>SearchResults</code>
      */
     private SearchResults searchDatabase() throws Exception {
-        SearchResults res = (SearchResults)Worker.post(new Task() {
-            public Object run() throws Exception {
+       
                 // determine parameters
                 String strTemp = null;
                 Object objTemp = null;
@@ -202,10 +203,7 @@ public class MarkerSearchPanel extends CustomPanel {
                     Utils.log(e.getMessage());
                     Utils.log(StringUtils.getStackTrace(e));
                 }
-                return res;
-            }
-        });
-
+              
         return res;
     }
 
@@ -254,6 +252,20 @@ public class MarkerSearchPanel extends CustomPanel {
         jspSearchResults.setViewportView(fxtblSearchResults);
         pnlSearchResults.revalidate();
     }
+    
+    
+     SecondaryLoop loop;
+    SearchResults res;
+    
+    class SearchThread extends Thread{
+        public void run() {
+            try{
+            res = searchDatabase();
+            }catch(Exception e){}
+            loop.exit();
+        }
+        
+    }
 
     /**
      * Handle click for the search button.
@@ -279,26 +291,23 @@ public class MarkerSearchPanel extends CustomPanel {
 
         try {
             // perform the search
-            final SearchResults res = searchDatabase();
+            
+           Toolkit tk = Toolkit.getDefaultToolkit();
+           EventQueue eq = tk.getSystemEventQueue();
+           loop = eq.createSecondaryLoop();
+           Thread worker = new SearchThread();
+           worker.start();
+           loop.enter();
+            
 
             progressGlassPane.setMessage("Rendering SearchResults...");
             // construct the new table to display the results
             configureSearchResultsTable();
 
-            Object obj = Worker.post(new Task() {
-                public Object run() throws Exception {
-                    final List<MarkerDTO> arr = new ArrayList<MarkerDTO>(res.getList());
+           ArrayList<MarkerDTO> arr = new ArrayList<MarkerDTO>(res.getList());
                     for (int i = 0; i < arr.size(); i++) {
-                        final int row = i;
-
-                        if ((i % 50) == 0) {
-                            Thread.sleep(10);
-                            SwingUtilities.invokeLater(new Runnable() {
-                                public void run() {
-                                    lblStatus.setText("Rendering result " + row + " of " + arr.size());
-                                }
-                            });
-                        }
+                      
+                       
 
                         MarkerDTO dto = arr.get(i);
                         
@@ -316,9 +325,7 @@ public class MarkerSearchPanel extends CustomPanel {
                         } catch (Exception e) {
                         }
                     }
-                    return "Done";
-                }
-            });
+                  
 
             // enable the UI
             btnSearch.setEnabled(true);
