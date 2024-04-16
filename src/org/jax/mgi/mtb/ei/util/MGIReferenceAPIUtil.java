@@ -37,6 +37,10 @@ public class MGIReferenceAPIUtil {
     private boolean testing = false;
     
     
+    
+    
+    
+    
     public static void main(String[] args){
      
         MGIReferenceAPIUtil util = new MGIReferenceAPIUtil();
@@ -44,14 +48,26 @@ public class MGIReferenceAPIUtil {
         util.REFERENCE_URL =  "http://bhmgipwi01lp.jax.org:8099/api/reference/";    
       
         util.testing = true;
-        util.TOKEN="";
+        util.TOKEN="8cbb3451025c0d3219f3a25feb87869a";
 
-        ArrayList<ReferenceDTO> refs = util.getReferences();
-        for(ReferenceDTO dto : refs){
-            System.out.println(dto.getAuthors());
-        }
-        
-       util.updateReferenceFullCoded("J:324452", "dab");
+        util.updateReferenceFullCoded("J:27047", "dab");
+        util.updateReferenceFullCoded("J:94027", "dab");
+        util.updateReferenceFullCoded("J:134886", "dab");
+        util.updateReferenceFullCoded("J:242071", "dab");
+        util.updateReferenceFullCoded("J:242160", "dab");
+        util.updateReferenceFullCoded("J:245820", "dab");
+        util.updateReferenceFullCoded("J:265578", "dab");
+        util.updateReferenceFullCoded("J:286479", "dab");
+        util.updateReferenceFullCoded("J:293341", "dab");
+        util.updateReferenceFullCoded("J:243605", "dab");
+        util.updateReferenceFullCoded("J:243686", "dab");
+        util.updateReferenceFullCoded("J:248166", "dab");
+        util.updateReferenceFullCoded("J:248162", "dab");
+      
+
+       
+       
+       
                 
     }
 
@@ -285,6 +301,17 @@ public class MGIReferenceAPIUtil {
             Utils.log(e);
         }
 
+    }
+    
+    
+    public void getReferenceTumorStatusByJNum(String jnum) throws Exception {
+        String url = REFERENCE_URL +"search";
+        String param =  "{ \"jnumid\" :\""+jnum+"\" }";
+        
+        JSONObject reference = new JSONObject(getJSON(url, param).replaceAll("\\[", "").replaceAll("\\]", ""));//.getJS
+        
+        System.out.println(jnum+" "+reference.getString("tumor_status"));
+        
     }
 
 }

@@ -481,9 +481,7 @@ public class TumorFrequencySearchPanel extends CustomPanel {
            
            // for java 11 need to stop using foxtrop and use secondayLoop for event blocking
            // experimental
-           Toolkit tk = Toolkit.getDefaultToolkit();
-           EventQueue eq = tk.getSystemEventQueue();
-           loop = eq.createSecondaryLoop();
+           Loop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
            Thread worker = new SearchThread();
            worker.start();
            loop.enter();

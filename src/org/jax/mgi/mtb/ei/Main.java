@@ -25,7 +25,7 @@ import org.jax.mgi.mtb.gui.MXInfoDialog;
 import org.jax.mgi.mtb.gui.progress.MXActiveWindowTracker;
 import org.jax.mgi.mtb.ei.util.Utils;
 import org.jax.mgi.mtb.utils.StringUtils;
-import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
+
 
 /**
  * The main class of the Editorial Interface.
@@ -84,20 +84,7 @@ public class Main {
               ex.printStackTrace();
             }
         } else {
-            try {
-                
-                // try loading the jgoodies
-                com.jgoodies.looks.plastic.PlasticXPLookAndFeel pxplaf = new com.jgoodies.looks.plastic.PlasticXPLookAndFeel();
-               
-           
-                UIManager.put("ClassLoader",pxplaf.getClass().getClassLoader());
-                
-                //String looks ="com.jgoodies.looks.plastic.PlasticXPLookAndFeel";
-               // UIManager.setLookAndFeel(looks);
-                
-                UIManager.setLookAndFeel(pxplaf);
-            } catch (Exception e) {
-                e.printStackTrace();
+            
 
                 // do nothing, no big deal that the look and feel cannot be
                 // used get the native look and feel class name
@@ -112,7 +99,7 @@ public class Main {
                 } catch (IllegalAccessException ex) {
                 }
             }
-        }
+        
     }
 
     /**

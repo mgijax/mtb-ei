@@ -128,8 +128,7 @@ public class StrainSearchPanel extends CustomPanel {
      * @return the <code>SearchResults</code>
      */
     private SearchResults searchDatabase() throws Exception {
-        SearchResults res = (SearchResults)Worker.post(new Task() {
-            public Object run() throws Exception {
+      
                 // determine parameters
                 String strTemp = null;
                 Object objTemp = null;
@@ -215,10 +214,8 @@ public class StrainSearchPanel extends CustomPanel {
                 }
 
                 return res;
-            }
-        });
-
-        return res;
+            
+       
     }
 
     /**
@@ -295,8 +292,7 @@ public class StrainSearchPanel extends CustomPanel {
             configureSearchResultsTable();
 
             if (res != null) {
-                Object obj = Worker.post(new Task() {
-                    public Object run() throws Exception {
+               
                         final List<MTBStrainSearchDTO> arr = new ArrayList<MTBStrainSearchDTO>(res.getList());
                         for (int i = 0; i < arr.size(); i++) {
                             final int row = i;
@@ -337,10 +333,8 @@ public class StrainSearchPanel extends CustomPanel {
                                 gV.add(v);
                             } catch (Exception e) {
                             }
-                        }
-                        return "Done";
-                    }
-                });
+                        } 
+                
             }
 
             // enable the UI

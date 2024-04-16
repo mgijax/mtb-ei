@@ -15,7 +15,6 @@ import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import org.apache.logging.log4j.Logger;
 import org.jax.mgi.mtb.dao.custom.mtb.MTBReferenceUtilDAO;
 import org.jax.mgi.mtb.dao.gen.mtb.AssayImagesDAO;
 import org.jax.mgi.mtb.dao.gen.mtb.AssayImagesDTO;

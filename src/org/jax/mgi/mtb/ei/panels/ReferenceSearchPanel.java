@@ -134,9 +134,7 @@ public class ReferenceSearchPanel extends CustomPanel {
     }
 
     private SearchResults loadFromTriage() throws Exception {
-        SearchResults res = (SearchResults) Worker.post(new Task() {
-
-            public Object run() throws Exception {
+       
                 MGIReferenceAPIUtil apiUtil = new MGIReferenceAPIUtil();
     
                 ArrayList<ReferenceDTO> refs = apiUtil.getReferences();
@@ -248,9 +246,7 @@ public class ReferenceSearchPanel extends CustomPanel {
                 res.setList(newList);
                 res.setTotal(newList.size());
 
-                return res;
-            }
-        });
+              
 
 
         return res;
@@ -267,9 +263,7 @@ public class ReferenceSearchPanel extends CustomPanel {
      * @return the <code>SearchResults</code>
      */
     private SearchResults searchDatabase() throws Exception {
-        SearchResults res = (SearchResults) Worker.post(new Task() {
-
-            public Object run() throws Exception {
+      
                 // determine parameters
                 String strTemp = null;
                 Object objTemp = null;
@@ -475,10 +469,7 @@ public class ReferenceSearchPanel extends CustomPanel {
                 }
 
                 return res;
-            }
-        });
-
-        return res;
+         
     }
 
     /**

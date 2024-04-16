@@ -4,6 +4,7 @@
  */
 package org.jax.mgi.mtb.ei.gui;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.JDesktopPane;
@@ -80,6 +81,9 @@ public class WatermarkDesktopPane extends JDesktopPane {
             
             g.drawString("Database: " + EIGlobals.getInstance().getDBType(), x, y);
             g.drawString("User: " + EIGlobals.getInstance().getMTBUsersDTO().getFullName(), x, y + 15);
+            
+            g.setColor(Color.blue);
+            
         }
     }
     
