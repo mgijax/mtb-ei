@@ -12,7 +12,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import org.apache.logging.log4j.Logger;
 import org.jax.mgi.mtb.ei.gui.MainFrame;
 import org.jax.mgi.mtb.dao.custom.mtb.MTBPathologyImageUtilDAO;
 import org.jax.mgi.mtb.dao.custom.mtb.MTBReferenceUtilDAO;
@@ -118,8 +117,7 @@ public class EIGlobals {
   private final String TRIAGE_URL="triage.url";
   private final String MGI_API_URL="mgi.api.url";
   private final String MGI_API_TOKEN = "mgi.api.token";
-  private final static Logger log =
-          org.apache.logging.log4j.LogManager.getLogger(EIGlobals.class.getName());
+  
   private static EIGlobals instance = null;
   private String JDBCDriver;
   private String JDBCUrl;
@@ -723,7 +721,7 @@ public class EIGlobals {
       initMethods();
       initDatabaseInfo();
     } catch (Exception e) {
-      log.error("Fatal initialization error!", e);
+      e.printStackTrace();
     }
   }
   
@@ -758,7 +756,7 @@ public class EIGlobals {
 
    
     } catch (Exception e) {
-      log.error("Fatal initialization error!", e);
+        e.printStackTrace();
     }
   }
 
@@ -842,12 +840,12 @@ public class EIGlobals {
         // Get property value
         String propValue = (String) props.get(propName);
 
-        log.info(propName + ": " + propValue);
+        
       }
 
       dbType = properties.getProperty("app.version");
     } catch (Exception e) {
-      log.error("Unable to set properties.", e);
+      e.printStackTrace();
     }
 
   }
@@ -893,7 +891,7 @@ public class EIGlobals {
                 dto.getAgentKey(), dto.getAgentTypeKey()));
       }
     } catch (SQLException sqle) {
-      log.error("Unable to initialize agents types.", sqle);
+     
     }
   }
 
@@ -922,7 +920,7 @@ public class EIGlobals {
       allAgentTypes.putAll(agentTypes);
 
     } catch (SQLException sqle) {
-      log.error("Unable to initialize agent types.", sqle);
+      
     }
   }
 
@@ -945,7 +943,7 @@ public class EIGlobals {
                 dto.getAlleleGroupTypeKey()));
       }
     } catch (SQLException sqle) {
-      log.error("Unable to initialize allele group types.", sqle);
+      
     }
   }
 
@@ -966,7 +964,7 @@ public class EIGlobals {
                 dto.getAlleleTypeKey()));
       }
     } catch (SQLException sqle) {
-      log.error("Unable to initialize allele types.", sqle);
+     
     }
   }
 
@@ -987,7 +985,7 @@ public class EIGlobals {
                 dto.getAssayTypeKey()));
       }
     } catch (SQLException sqle) {
-      log.error("Unable to initialize allele types.", sqle);
+      
     }
   }
 
@@ -1008,7 +1006,7 @@ public class EIGlobals {
                 dto.getMarkerTypeKey()));
       }
     } catch (SQLException sqle) {
-      log.error("Unable to initialize marker types.", sqle);
+     
     }
   }
 
@@ -1029,7 +1027,7 @@ public class EIGlobals {
                 dto.getLabelTypeKey()));
       }
     } catch (SQLException sqle) {
-      log.error("Unable to initialize label types.", sqle);
+     
     }
   }
 
@@ -1052,8 +1050,7 @@ public class EIGlobals {
                 dto.getAlleleMarkerAssocTypeKey()));
       }
     } catch (SQLException sqle) {
-      log.error("Unable to initialize allele marker association types.",
-              sqle);
+      
     }
   }
 
@@ -1077,7 +1074,7 @@ public class EIGlobals {
                 dto.getAnatomicalSystemKey()));
       }
     } catch (SQLException sqle) {
-      log.error("Unable to initialize anatomical systems.", sqle);
+     
     }
   }
 
@@ -1096,8 +1093,7 @@ public class EIGlobals {
         LabelValueBean<String, Long> bean =
                 allOrganisms.get(dto.getOrganismKey());
         if (bean == null) {
-          log.error("Error retrieving chromosome: " +
-                  dto.getChromosomeKey());
+         
         } else {
           LabelValueDataBean<String, Long, Long> newBean =
                   new LabelValueDataBean<String, Long, Long>();
@@ -1110,7 +1106,7 @@ public class EIGlobals {
         }
       }
     } catch (SQLException sqle) {
-      log.error("Unable to initialize organsisms/chromosomes.", sqle);
+      
     }
   }
 
@@ -1132,7 +1128,7 @@ public class EIGlobals {
                 dto.getChromosomeKey()));
       }
     } catch (SQLException sqle) {
-      log.error("Unable to initialize chromosomes.", sqle);
+     
     }
   }
 
@@ -1159,7 +1155,7 @@ public class EIGlobals {
         allChromosomes.put(dto.getOrganismKey(), chroms);
       }
     } catch (SQLException sqle) {
-      log.error("Unable to initialize chromosomes.", sqle);
+     
     }
   }
 
@@ -1181,7 +1177,7 @@ public class EIGlobals {
         }
       }
     } catch (SQLException sqle) {
-      log.error("Unable to initialize databse information.", sqle);
+      
     }
   }
 
@@ -1202,7 +1198,7 @@ public class EIGlobals {
                 dto.getFixativeKey()));
       }
     } catch (SQLException sqle) {
-      log.error("Unable to initialize fixatives.", sqle);
+      
     }
   }
 
@@ -1220,7 +1216,7 @@ public class EIGlobals {
         allImageContributors.put(dto.getValue(), dto);
       }
     } catch (Exception e) {
-      log.error("Unable to initialize image contributors.", e);
+      
     }
   }
 
@@ -1239,7 +1235,7 @@ public class EIGlobals {
                 dto.getValue()));
       }
     } catch (Exception e) {
-      log.error("Unable to initialize methods/stains.", e);
+      
     }
   }
 
@@ -1260,7 +1256,7 @@ public class EIGlobals {
                 dto.getOrganismKey()));
       }
     } catch (SQLException sqle) {
-      log.error("Unable to initialize organisms.", sqle);
+      
     }
   }
 
@@ -1283,7 +1279,7 @@ public class EIGlobals {
         }
       }
     } catch (SQLException sqle) {
-      log.error("Unable to initialize organs. (filtered)", sqle);
+      
     }
   }
 
@@ -1320,7 +1316,7 @@ public class EIGlobals {
 
       allOrgansUnfiltered.putAll(unspecified);
     } catch (SQLException sqle) {
-      log.error("Unable to initialize organs (unfiltered).", sqle);
+     
     }
   }
 
@@ -1340,7 +1336,7 @@ public class EIGlobals {
                 dto.getProbeKey()));
       }
     } catch (SQLException sqle) {
-      log.error("Unable to initialize probes.", sqle);
+     
     }
   }
 
@@ -1360,7 +1356,7 @@ public class EIGlobals {
                 dto.getSiteInfoKey()));
       }
     } catch (SQLException sqle) {
-      log.error("Unable to initialize site info.", sqle);
+     
     }
   }
 
@@ -1382,7 +1378,6 @@ public class EIGlobals {
                 dto.getStrainFamilyKey()));
       }
     } catch (SQLException sqle) {
-      log.error("Unable to initialize strain families.", sqle);
     }
   }
 
@@ -1403,7 +1398,7 @@ public class EIGlobals {
                 dto.getStrainTypeKey()));
       }
     } catch (SQLException sqle) {
-      log.error("Unable to initialize strain types.", sqle);
+     
     }
   }
 
@@ -1427,7 +1422,7 @@ public class EIGlobals {
                 dto.getTumorClassificationKey()));
       }
     } catch (SQLException sqle) {
-      log.error("Unable to initialize tumor classifications.", sqle);
+      
     }
   }
 
@@ -1450,7 +1445,7 @@ public class EIGlobals {
                 dto.getTumorProgressionTypeKey()));
       }
     } catch (SQLException sqle) {
-      log.error("Unable to initialize tumor progression types.", sqle);
+      
     }
   }
   

@@ -22,7 +22,6 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import org.apache.logging.log4j.Logger;
 import org.jax.mgi.mtb.dao.custom.mtb.MTBReferenceUtilDAO;
 import org.jax.mgi.mtb.dao.custom.mtb.MTBSynchronizationUtilDAO;
 import org.jax.mgi.mtb.dao.gen.mtb.HumanMarkerReferenceDAO;
@@ -63,8 +62,7 @@ import org.jax.mgi.mtb.utils.StringUtils;
  */
 public class ReferencePanel extends CustomPanel {
 
-  private static final Logger log =
-          org.apache.logging.log4j.LogManager.getLogger(ReferencePanel.class.getName());
+ 
   private static SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy"); 
   private static final long MTB_DATA_STATUS_INDEXED = 130;
   // -------------------------------------------------------------- Constants
@@ -294,7 +292,7 @@ public class ReferencePanel extends CustomPanel {
         bs.showDocument(new URL(jLabelPubMedLink.getText()));
       } catch (Exception ue) {
         // Service is not supported
-        log.debug(ue);
+        
       }
     }
 
@@ -352,7 +350,7 @@ public class ReferencePanel extends CustomPanel {
       }
 
     } catch (Exception e) {
-      log.error(e);
+      Utils.showErrorDialog(e.getMessage());
     }
 
     configureTumorTypesTable(data);
@@ -607,7 +605,7 @@ public class ReferencePanel extends CustomPanel {
         String keyStr = (String) tm.getValueAt(nRow, 0);
         rttaKey = new Long(keyStr);
       } catch (ClassCastException e) {
-        log.error(e);
+        Utils.showErrorDialog(e.getMessage());
       }
       if(rttaKey.longValue()== 0){
         JOptionPane.showMessageDialog(this, "Curated tumor types can not be deleted");
@@ -832,7 +830,7 @@ public class ReferencePanel extends CustomPanel {
 
     } catch (Exception e) {
       // unable to create TumorType
-      log.error(e);
+      Utils.showErrorDialog(e.getMessage());
     }
   }
 

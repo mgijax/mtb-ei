@@ -4,11 +4,10 @@
  */
 package org.jax.mgi.mtb.ei.panels;
 
-import foxtrot.Task;
-import foxtrot.Worker;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.EventQueue;
+import java.awt.SecondaryLoop;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -67,8 +66,8 @@ public class TumorFrequencySearchPanel extends CustomPanel {
     // ----------------------------------------------------- Instance Variables
 
    protected MXTable fxtblSearchResults = null;
-    private MXProgressGlassPane progressGlassPane = null;
-    private Vector gV = new Vector();
+   private MXProgressGlassPane progressGlassPane = null;
+   private Vector gV = new Vector();
 
 
     // ----------------------------------------------------------- Constructors
@@ -182,6 +181,9 @@ public class TumorFrequencySearchPanel extends CustomPanel {
         btnEdit.setEnabled(false);
         btnDelete.setEnabled(false);
     }
+    
+    
+   
 
     /**
      * Search the database for the <code>Reference</code>s based upon the
@@ -189,9 +191,11 @@ public class TumorFrequencySearchPanel extends CustomPanel {
      *
      * @return the <code>SearchResults</code>
      */
+    
+    
+    
     private SearchResults searchDatabase() throws Exception {
-        final SearchResults res = (SearchResults)Worker.post(new Task() {
-            public Object run() throws Exception {
+        
                 gV = new Vector();
 
                 // determine parameters
@@ -379,10 +383,7 @@ public class TumorFrequencySearchPanel extends CustomPanel {
                 }
 
                 return res;
-            }
-        });
-
-        return res;
+            
     }
 
     /**
@@ -432,10 +433,13 @@ public class TumorFrequencySearchPanel extends CustomPanel {
         pnlResults.revalidate();
     }
 
+    
     /**
      * Handle click for the search button.
      */
     private void search() {
+        
+       
         gV = new Vector();
 
         // disable the UI
@@ -455,28 +459,17 @@ public class TumorFrequencySearchPanel extends CustomPanel {
         progressGlassPane.setMessage("Searching...");
 
         try {
-            // perform the search
-            final SearchResults res = searchDatabase();
+           
+            SearchResults res = searchDatabase();
 
             progressGlassPane.setMessage("Rendering SearchResults...");
             // construct the new table to display the results
             configureSearchResultsTable();
 
-            Object obj = Worker.post(new Task() {
-                public Object run() throws Exception {
+            
                     final List<MTBStrainTumorDetailsDTO> arr = new ArrayList<MTBStrainTumorDetailsDTO>(res.getList());
                     for (int i = 0; i < arr.size(); i++) {
-                        final int row = i;
-
-                        if ((i % 50) == 0) {
-                            Thread.sleep(10);
-                            SwingUtilities.invokeLater(new Runnable() {
-                                public void run() {
-                                    lblStatus.setText("Rendering result " + row + " of " + arr.size());
-                                }
-                            });
-                        }
-
+                     
                         try {
                             MTBStrainTumorDetailsDTO dto = arr.get(i);
 
@@ -495,9 +488,7 @@ public class TumorFrequencySearchPanel extends CustomPanel {
                             Utils.log(e);
                         }
                     }
-                    return "Done";
-                }
-            });
+                   
 
             // enable the UI
             btnSearch.setEnabled(true);

@@ -166,7 +166,7 @@ public class LoginDialog extends JDialog implements FadeListener  {
                                          "\n\nPlease try again.");
             }
         } catch (Exception e) {
-            Utils.log("Unable to authenticate user!!!");
+            Utils.showErrorDialog("Unable to authenticate user.");
         }
     }
 

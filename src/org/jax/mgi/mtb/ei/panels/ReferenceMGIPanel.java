@@ -6,7 +6,6 @@ package org.jax.mgi.mtb.ei.panels;
 
 import java.awt.Point;
 import java.util.Date;
-import org.apache.logging.log4j.Logger;
 import org.jax.mgi.mtb.dao.custom.mtb.MTBSynchronizationUtilDAO;
 import org.jax.mgi.mtb.dao.gen.mtb.AccessionDAO;
 import org.jax.mgi.mtb.dao.gen.mtb.AccessionDTO;
@@ -38,9 +37,7 @@ public class ReferenceMGIPanel extends CustomPanel {
     // -------------------------------------------------------------- Constants
     // none
     // ----------------------------------------------------- Instance Variables
-    private final static Logger log
-            = org.apache.logging.log4j.LogManager.getLogger(ReferenceMGIPanel.class.getName());
-
+  
     private ReferenceDTO dtoReference = null;
 
     // progress monitor
@@ -68,7 +65,7 @@ public class ReferenceMGIPanel extends CustomPanel {
                 try {
                     lookupData();
                 } catch (Exception e) {
-                    log.error("Unable to load JNumber: " + txtJNumber.getText(), e);
+                   Utils.showErrorDialog("Unable to load "+txtJNumber.getText()+" "+e.getMessage());
                 } finally {
                     // to ensure that progress dlg is closed in case of
                     // any exception

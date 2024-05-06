@@ -20,7 +20,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
-import org.apache.logging.log4j.Logger;
 import org.jax.mgi.mtb.dao.custom.mtb.MTBSeriesSampleUtilDAO;
 import org.jax.mgi.mtb.dao.gen.mtb.SampleAssocDAO;
 import org.jax.mgi.mtb.dao.gen.mtb.SampleAssocDTO;
@@ -48,8 +47,7 @@ import org.jax.mgi.mtb.utils.LabelValueDataBean;
  */
 public class SampleAssocPanel extends CustomPanel {
 
-  private final static Logger log =
-          org.apache.logging.log4j.LogManager.getLogger(SampleAssocPanel.class.getName());
+  
   private MTBSeriesSampleUtilDAO ssUtilDAO = MTBSeriesSampleUtilDAO.getInstance();
   private SampleDTO sampleDTO = null;
 
@@ -314,7 +312,7 @@ public class SampleAssocPanel extends CustomPanel {
         bs.showDocument(new URL(txtFieldLink.getText()));
       } catch (Exception ue) {
         // Service is not supported
-        log.debug(ue);
+       
       }
     }
 
@@ -340,10 +338,10 @@ public class SampleAssocPanel extends CustomPanel {
 
     } catch (Exception e) {
       try {
-        log.error(e);
+       Utils.showErrorDialog(e.getMessage());
         sDAO.getManager().endTransaction(false);
       } catch (Exception e2) {
-        log.error(e2);
+        Utils.showErrorDialog(e2.getMessage());
       }
       Utils.showErrorDialog("Unable to delete Sample. It may belong to a series.", e);
     }

@@ -5,8 +5,6 @@
  */
 package org.jax.mgi.mtb.ei.panels;
 
-import foxtrot.Task;
-import foxtrot.Worker;
 import java.awt.Color;
 import java.awt.Component;
 import java.util.ArrayList;
@@ -53,15 +51,10 @@ public class AlleleMGISyncPanel extends CustomPanel {
           EIGlobals.getInstance().getMGIPassword(),
           EIGlobals.getInstance().getMGIDriver(),
           EIGlobals.getInstance().getMGIUrl());
-    try{
-      Object obj = Worker.post(new Task() {
-                public Object run() throws Exception {
-                  dtos = dao.getAllelesToSync();
-                  return "Done";
-                }
-
-      });
-    }catch(Exception e){}
+    
+    dtos = dao.getAllelesToSync();
+               
+    
 
     this.lblTotal.setText(dtos.size() + " non matching Alleles");
 

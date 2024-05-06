@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JFileChooser;
-import org.apache.logging.log4j.Logger;
 import org.jax.mgi.mtb.dao.gen.mtb.ImagesDAO;
 import org.jax.mgi.mtb.dao.gen.mtb.ImagesDTO;
 import org.jax.mgi.mtb.dao.gen.mtb.MTBUsersDTO;
@@ -51,8 +50,7 @@ public class PathologyImageDetailDialog extends javax.swing.JDialog {
 
     // ----------------------------------------------------- Instance Variables
 
-    private final static Logger log =
-            org.apache.logging.log4j.LogManager.getLogger(PathologyImageDetailDialog.class.getName());
+  
     private int nType = IMAGE_ADD;
     private ImagesDTO dtoImage = null;
     private ImagesDTO dtoImageOriginal = null;
@@ -225,19 +223,19 @@ public class PathologyImageDetailDialog extends javax.swing.JDialog {
                 url = new URL(dtoImage.getUrl() + "/" +
                               dtoImage.getUrlPath() + "/" +
                               dtoImage.getMediumResName());
-                if (log.isDebugEnabled()) {
-                    log.debug("url=" + url.toString());
-                }
+                
+                    
+                
             } catch (MalformedURLException mfue) {
-                log.error("Unable to create URL.", mfue);
+                EIGlobals.getInstance().getMainFrame().log(mfue);
             }
 
             updateImage(url);
         } catch (Exception e) {
-            log.error("Error retrieving pathology images.");
-            log.error("pathologyKey=" + lPathologyKey);
-            log.error("imageKey=" + lImageKey);
-            log.error(e.getMessage(), e);
+             EIGlobals.getInstance().getMainFrame().log("Error retrieving pathology images.");
+             EIGlobals.getInstance().getMainFrame().log("pathologyKey=" + lPathologyKey);
+             EIGlobals.getInstance().getMainFrame().log("imageKey=" + lImageKey);
+             EIGlobals.getInstance().getMainFrame().log(e);
         }
     }
 
@@ -418,11 +416,11 @@ public class PathologyImageDetailDialog extends javax.swing.JDialog {
 
         for (int i = 0; i < indices.length; i++) {
             LabelValueBean<String,Long> bean = modelProbes.getElementAt(indices[i]);
-            log.debug(bean.toString());
+           
             ProbeDTO dto = ProbeDAO.getInstance().createProbeDTO();
             dto.setProbeKey(bean.getValue());
             dtoProbes[i] = dto;
-            log.debug(dtoProbes[i].toString());
+            
         }
 
         this.setVisible(false);
@@ -496,9 +494,7 @@ public class PathologyImageDetailDialog extends javax.swing.JDialog {
         File f = chooser.getSelectedFile();
 
         if (f != null) {
-            if (log.isDebugEnabled()) {
-                log.debug("File Selected: " + f.toString());
-            }
+            
             fileMediumRes = f;
             txtMediumResName.setText(f.getName());
             updateImage(f);

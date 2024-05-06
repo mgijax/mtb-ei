@@ -13,7 +13,6 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.TransferHandler;
-import org.apache.logging.log4j.Logger;
 import org.jax.mgi.mtb.ei.EIGlobals;
 import org.jax.mgi.mtb.ei.models.LVDBeanListModel;
 
@@ -32,8 +31,7 @@ public class LVDBeanTransferHandler extends TransferHandler {
 
     // ----------------------------------------------------- Instance Variables
 
-    private final static Logger log =
-            org.apache.logging.log4j.LogManager.getLogger(LVDBeanTransferHandler.class.getName());
+    
     private DataFlavor localListFlavor, serialListFlavor;
     private String localListType = DataFlavor.javaJVMLocalObjectMimeType +
                                 ";class=java.util.List";
@@ -51,7 +49,7 @@ public class LVDBeanTransferHandler extends TransferHandler {
         try {
             localListFlavor = new DataFlavor(localListType);
         } catch (ClassNotFoundException e) {
-            log.error("ListTransferHandler: unable to create", e);
+          
         }
         serialListFlavor = new DataFlavor(List.class, "List");
     }
@@ -88,10 +86,10 @@ public class LVDBeanTransferHandler extends TransferHandler {
                 return false;
             }
         } catch (UnsupportedFlavorException ufe) {
-            log.error("importData: unsupported data flavor", ufe);
+            
             return false;
         } catch (IOException ioe) {
-            log.error("importData: I/O exception", ioe);
+           
             return false;
         }
 

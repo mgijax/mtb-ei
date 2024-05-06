@@ -13,7 +13,6 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
-import org.apache.logging.log4j.Logger;
 import org.jax.mgi.mtb.dao.gen.mtb.AlleleDAO;
 import org.jax.mgi.mtb.dao.gen.mtb.AlleleDTO;
 import org.jax.mgi.mtb.dao.gen.mtb.AllelePairDAO;
@@ -57,8 +56,7 @@ public class AllelePairPanel extends CustomPanel {
 
     // ----------------------------------------------------- Instance Variables
 
-    private final static Logger log =
-            org.apache.logging.log4j.LogManager.getLogger(AllelePairPanel.class.getName());
+  
 
     // the AllelePairDTO object
     private AllelePairDTO dtoAP = null;
@@ -107,8 +105,8 @@ public class AllelePairPanel extends CustomPanel {
                 try{
                     lookupData(lKey);
                 } catch (Exception e) {
-                    log.error("Unable to lookup allele pair data for " + lKey,
-                              e);
+                     EIGlobals.getInstance().getMainFrame().log("Unable to lookup allele pair data for " + lKey);
+                      EIGlobals.getInstance().getMainFrame().log(e);
                 } finally{
                     // to ensure that progress dlg is closed in case of
                     // any exception
@@ -209,7 +207,7 @@ public class AllelePairPanel extends CustomPanel {
                 dtoAllele2 = daoAllele.loadByPrimaryKey(a2Key);
             }
         } catch (Exception e) {
-            log.error("Error retrieving allele pair: " + lKey, e);
+            
             Utils.showErrorDialog("Error retrieving allele pair: " + lKey, e);
         }
 

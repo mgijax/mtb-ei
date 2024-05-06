@@ -15,7 +15,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
-import org.apache.logging.log4j.Logger;
 import org.jax.mgi.mtb.dao.custom.SearchResults;
 import org.jax.mgi.mtb.dao.custom.mtb.MTBGeneticsUtilDAO;
 import org.jax.mgi.mtb.dao.custom.mtb.MTBSynchronizationUtilDAO;
@@ -78,9 +77,7 @@ public class AllelePanel extends CustomPanel {
 
     // ----------------------------------------------------- Instance Variables
 
-    private final static Logger log =
-            org.apache.logging.log4j.LogManager.getLogger(AllelePanel.class.getName());
-
+   
     // the allele dto
     private AlleleDTO dtoAllele = null;
 
@@ -595,7 +592,8 @@ public class AllelePanel extends CustomPanel {
             lblMGIAlleleType.setText((String)dtoAllele.getDataBean().get(MTBSynchronizationUtilDAO.MGI_ALLELE_TYPE));
             txtareaNote.setText(dtoAllele.getNote());
         } catch (Exception e) {
-            log.error("Unable to load allele from MGI.", e);
+             EIGlobals.getInstance().getMainFrame().log("Unable to load allele from MGI.");
+             EIGlobals.getInstance().getMainFrame().log(e);
         }
     }
 
@@ -780,7 +778,7 @@ public class AllelePanel extends CustomPanel {
             updateProgress("All allele data saved!");
             bCommit = true;
         } catch (Exception e) {
-            log.error("Unable to insert allele.", e);
+           
             Utils.showErrorDialog("Unable to insert allele.", e);
         } finally {
             try {
@@ -897,7 +895,7 @@ public class AllelePanel extends CustomPanel {
             updateProgress("All allele data saved!");
             bCommit = true;
         } catch (Exception e) {
-            log.error("Unable to update allele.", e);
+            
             Utils.showErrorDialog(e.getMessage(), e);
         } finally {
             try {

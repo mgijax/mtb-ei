@@ -22,7 +22,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
-import org.apache.logging.log4j.Logger;
 import org.jax.mgi.mtb.dao.custom.mtb.MTBSeriesSampleUtilDAO;
 import org.jax.mgi.mtb.dao.gen.mtb.SampleDAO;
 import org.jax.mgi.mtb.dao.gen.mtb.SampleDTO;
@@ -48,8 +47,7 @@ import org.jax.mgi.mtb.utils.LabelValueDataBean;
  */
 public class SeriesPanel extends CustomPanel {
 
-  private final static Logger log =
-          org.apache.logging.log4j.LogManager.getLogger(SeriesPanel.class.getName());
+  
   private SeriesDTO seriesDTO = null;  
   
   private MTBSeriesSampleUtilDAO ssUtilDAO = MTBSeriesSampleUtilDAO.getInstance();
@@ -331,7 +329,7 @@ public class SeriesPanel extends CustomPanel {
         bs.showDocument(new URL(txtFieldLink.getText()));
       } catch (Exception ue) {
         // Service is not supported
-        log.debug(ue);
+       Utils.showErrorDialog(ue.getMessage());
       }
     }
 
@@ -366,10 +364,10 @@ public class SeriesPanel extends CustomPanel {
 
     } catch (Exception e) {
       try {
-        log.error(e);
+        Utils.showErrorDialog(e.getMessage());
         sDAO.getManager().endTransaction(false);
       } catch (Exception e2) {
-        log.error(e2);
+        Utils.showErrorDialog(e2.getMessage());
       }
       Utils.showErrorDialog("Unable to delete Series and Sample assocations", e);
     }

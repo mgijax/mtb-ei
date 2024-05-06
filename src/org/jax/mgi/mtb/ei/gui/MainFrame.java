@@ -18,10 +18,8 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import org.apache.logging.log4j.Logger;
 import org.jax.mgi.mtb.ei.EIGlobals;
 import org.jax.mgi.mtb.ei.dialogs.AboutDialog;
-import org.jax.mgi.mtb.ei.gui.WatermarkDesktopPane;
 import org.jax.mgi.mtb.ei.panels.AgentTypesPanel;
 import org.jax.mgi.mtb.ei.panels.AgentsPanel;
 import org.jax.mgi.mtb.ei.panels.AlleleMGISyncPanel;
@@ -82,8 +80,7 @@ public class MainFrame extends JFrame {
 
     // ----------------------------------------------------- Instance Variables
 
-    private final static Logger log = 
-            org.apache.logging.log4j.LogManager.getLogger(MainFrame.class.getName());
+    
     private MainMenuRollupPanel menuPanel = null;
     private Icon iconSearch = null;
     private Icon iconAdd = null;
@@ -245,7 +242,8 @@ public class MainFrame extends JFrame {
                     MXProgressMonitor monitor = (MXProgressMonitor)get();
                     monitor.setCurrent("Done!", monitor.getTotal());
                 } catch (Exception e) {
-                    log.error("Unable to launch tumor type window.", e);
+                    log("Unable to launch tumor type window.");
+                    log(e);
                 }
             }
         };
@@ -826,7 +824,8 @@ public class MainFrame extends JFrame {
                                EIGlobals.getInstance().getJdbcPassword());
             f.setActiveConnectionId("MTB");
         } catch (Exception e) {
-            log.error("Unable to instantiate jSQL!!!", e);
+            log("Unable to instantiate jSQL!!!");
+            log(e);
         }
 
 
