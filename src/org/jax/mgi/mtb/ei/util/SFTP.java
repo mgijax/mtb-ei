@@ -55,6 +55,7 @@ public class SFTP {
                 session.setPassword(this.pwd);
                 java.util.Properties config = new java.util.Properties();
                 config.put("StrictHostKeyChecking", "no");
+                config.put("PreferredAuthentications", "password");
                 session.setConfig(config);
                 session.connect();
                 channel = session.openChannel("sftp");
@@ -88,6 +89,7 @@ public class SFTP {
             session.setPassword(this.pwd);
             java.util.Properties config = new java.util.Properties();
             config.put("StrictHostKeyChecking", "no");
+            config.put("PreferredAuthentications", "password");
             session.setConfig(config);
             session.connect();
             channel = session.openChannel("sftp");
